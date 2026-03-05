@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
-
     @Inject(method = "calculatePassengerTransition",at = @At("RETURN"), cancellable = true)
     private void calculatePassengerTransition(TeleportTransition teleportTarget, Entity passenger,
                                             CallbackInfoReturnable<TeleportTransition> cir){
