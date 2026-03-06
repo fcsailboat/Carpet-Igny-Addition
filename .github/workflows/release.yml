@@ -171,9 +171,8 @@ jobs:
           modrinth-id: 7PCm6yD1
           modrinth-token: ${{ secrets.MODRINTH_API_TOKEN }}
 
-          # https://legacy.curseforge.com/account/api-tokens
-          #          curseforge-id: 314159
-          #          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+          curseforge-id: 1479191
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           github-tag: ${{ steps.release_info.outputs.tag_name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -187,11 +186,9 @@ jobs:
           loaders: fabric
           game-versions: ${{ steps.properties_v.outputs.game_versions }}
           game-version-filter: any
-          dependencies: |
-            [
-              {"project_id": "P7dR8mSH", "dependency_type": "required"},
-              {"project_id": "TQTTVgYE", "dependency_type": "required"}
-            ]
+          dependencies: |-
+            carpet(required)
+            fabric-api(required)
           github-changelog: ${{ steps.get_release.outputs.body }}
           modrinth-changelog: ${{ steps.changelog.outputs.result }}
           curseforge-changelog: ${{ steps.changelog.outputs.result }}
