@@ -81,7 +81,7 @@ public class TadpoleMixin {
             )
     )
     @SuppressWarnings("unchecked")
-    //#if MC < = 12004
+    //#if MC <= 12004
     //$$ private SpawnGroupData finalizeSpawn(Frog instance, ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, SpawnGroupData spawnGroupData, CompoundTag tag, Operation<SpawnGroupData> original) {
     //$$     SpawnGroupData result = original.call(instance, serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, tag);
     //#else
