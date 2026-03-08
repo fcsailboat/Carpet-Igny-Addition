@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/github/license/liuyuexiaoyu1/Carpet-Igny-Addition)](https://choosealicense.com/licenses/mit/)
 [![Modrinth](https://img.shields.io/modrinth/dt/carpet-igny-addition?color=00AF5C&label=Modrinth%20downloads&logo=modrinth)](https://modrinth.com/mod/carpet-igny-addition)
-[![CurseForge](https://img.shields.io/curseforge/dt/1479191?logo=curseforge&label=Modrinth%20downloads&color=f16436)](https://www.curseforge.com/minecraft/mc-mods/carpet-igny-addition)
+[![CurseForge](https://img.shields.io/curseforge/dt/1479191?logo=curseforge&label=CurseForge%20downloads&color=f16436)](https://www.curseforge.com/minecraft/mc-mods/carpet-igny-addition)
 [![MC Versions](https://cf.way2muchnoise.eu/versions/For%20MC_1479191_all.svg)](https://www.curseforge.com/minecraft/mc-mods/carpet-igny-addition)
 [![Github](https://img.shields.io/github/downloads/liuyuexiaoyu1/Carpet-Igny-Addition/total?color=161616&label=Github%20downloads&logo=github)](https://github.com/liuyuexiaoyu1/Carpet-Igny-Addition/releases)
 [![QQGroup](https://img.shields.io/badge/Chat-QQGroup-12B7F5?style=flat&logo=qq&logoColor=white)](https://qm.qq.com/cgi-bin/qm/qr?k=YhMAATwf3KkDwdE3xRnP6vQ0A7NdS1Pt&jump_from=webapi&authKey=90ykz2A/ExWM+yBm3/53+Vo1tZMjW+vHxSrW2OWzVee6bNov+lCBK9q2SXhMTTnt)
