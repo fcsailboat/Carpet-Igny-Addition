@@ -122,13 +122,13 @@ loom {
 		// run server, but with mixin auditor enabled
 		serverMixinAudit {
 			server()
-			vmArgs '-DmixinAuditor.audit=true'
+			vmArgs('-DmixinAuditor.audit=true', '-Dmixin.debug.countInjections=false')
 		}
 
 		// run client, but with mixin auditor enabled
 		clientMixinAudit {
 			client()
-			vmArgs('-DmixinAuditor.audit=true', '-DmixinAuditor.when=game_init')
+			vmArgs('-DmixinAuditor.audit=true', '-DmixinAuditor.when=game_init', '-Dmixin.debug.countInjections=false')
 		}
 	}
 }
