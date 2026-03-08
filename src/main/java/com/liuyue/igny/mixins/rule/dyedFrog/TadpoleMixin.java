@@ -73,12 +73,21 @@ public class TadpoleMixin {
             //#endif
             at = @At(
                     value = "INVOKE",
+                    //#if MC <= 12004
+                    //$$ target = "Lnet/minecraft/world/entity/animal/frog/Frog;finalizeSpawn(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/world/DifficultyInstance;Lnet/minecraft/world/entity/MobSpawnType;Lnet/minecraft/world/entity/SpawnGroupData;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/entity/SpawnGroupData;"
+                    //#else
                     target = "Lnet/minecraft/world/entity/animal/frog/Frog;finalizeSpawn(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/world/DifficultyInstance;Lnet/minecraft/world/entity/MobSpawnType;Lnet/minecraft/world/entity/SpawnGroupData;)Lnet/minecraft/world/entity/SpawnGroupData;"
+                    //#endif
             )
     )
     @SuppressWarnings("unchecked")
+    //#if MC < = 12004
+    //$$ private SpawnGroupData finalizeSpawn(Frog instance, ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, SpawnGroupData spawnGroupData, CompoundTag tag, Operation<SpawnGroupData> original) {
+    //$$     SpawnGroupData result = original.call(instance, serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, tag);
+    //#else
     private SpawnGroupData finalizeSpawn(Frog instance, ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, SpawnGroupData spawnGroupData, Operation<SpawnGroupData> original) {
         SpawnGroupData result = original.call(instance, serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
+        //#endif
         //#if MC <= 12004
         //$$ List<Map.Entry<FrogVariant, Integer>> stats = new ArrayList<>();
         //$$ stats.add(new AbstractMap.SimpleEntry<>(FrogVariant.COLD, greenDyeCount));
