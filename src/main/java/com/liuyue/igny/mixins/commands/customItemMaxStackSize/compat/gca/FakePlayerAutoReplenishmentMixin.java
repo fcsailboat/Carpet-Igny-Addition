@@ -1,5 +1,7 @@
 package com.liuyue.igny.mixins.commands.customItemMaxStackSize.compat.gca;
 
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -7,6 +9,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@Restriction(
+        require = {
+                @Condition("gca")
+        }
+)
 @Mixin(targets = "dev.dubhe.gugle.carpet.tools.player.FakePlayerAutoReplenishment")
 @Pseudo
 public abstract class FakePlayerAutoReplenishmentMixin {

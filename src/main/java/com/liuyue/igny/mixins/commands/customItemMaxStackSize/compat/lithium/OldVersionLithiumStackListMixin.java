@@ -3,11 +3,18 @@ package com.liuyue.igny.mixins.commands.customItemMaxStackSize.compat.lithium;
 import com.liuyue.igny.IGNYSettings;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 
+@Restriction(
+        require = {
+                @Condition("lithium")
+        }
+)
 @Mixin(targets = "me.jellysquid.mods.lithium.common.hopper.LithiumStackList")
 @Pseudo
 public abstract class OldVersionLithiumStackListMixin {

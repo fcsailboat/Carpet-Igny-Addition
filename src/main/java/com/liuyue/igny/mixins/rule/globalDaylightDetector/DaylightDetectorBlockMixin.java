@@ -61,9 +61,9 @@ public class DaylightDetectorBlockMixin {
             instance = server.getLevel(Level.OVERWORLD);
             assert instance != null;
             //#if MC >= 26.1
-            //$$ return original.call(instance, new BlockPos(pos.getX(), instance.getMaxY(), pos.getZ()));
+            //$$ return original.call(instance, new BlockPos(29999998, instance.getMaxY(), 29999998));
             //#else
-            return original.call(instance, lightLayer, new BlockPos(pos.getX(), instance.getMaxBuildHeight(), pos.getZ()));
+            return original.call(instance, lightLayer, new BlockPos(29999998, instance.getMaxBuildHeight(), 29999998));
             //#endif
         }
         //#if MC >= 26.1

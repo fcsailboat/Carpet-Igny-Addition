@@ -17,6 +17,8 @@ import ch.endte.syncmatica.network.PacketType;
 import com.liuyue.igny.IGNYSettings;
 import com.liuyue.igny.utils.CommandUtils;
 import com.llamalad7.mixinextras.sugar.Local;
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.network.FriendlyByteBuf;
 //#if MC >= 26.1
 //$$ import com.liuyue.igny.utils.compat.DummyClass;
@@ -35,6 +37,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
+@Restriction(
+        require = {
+                @Condition("syncmatica")
+        }
+)
 //#if MC >= 26.1
 //$$ @Mixin(DummyClass.class)
 //#else

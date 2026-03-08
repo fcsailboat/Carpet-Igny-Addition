@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "com.liuyue.igny.mixins",
   "compatibilityLevel": "{{COMPATIBILITY_LEVEL}}",
+  "plugin": "com.liuyue.igny.utils.IGNYMixinConfigPlugin",
   "mixins": [
     "carpet.EntityPlayerMPFakeMixin",
     "carpet.SettingsManagerMixin",
@@ -82,6 +83,7 @@
     "rule.lightningBoltNoFire.EntityMixin",
     "rule.lightningBoltNoFire.LightningBoltMixin",
     "rule.locatorBarNoFakePlayer.ServerWaypointManagerMixin",
+    "rule.looseEnderPearlChunkLoading.ThrownEnderpearlMixin",
     "rule.maxEndPortalSize.EnderEyeItemMixin",
     "rule.noOwnerTntLootingIII.EnchantedCountIncreaseFunctionMixin",
     "rule.noWardenDarkness.WardenMixin",
