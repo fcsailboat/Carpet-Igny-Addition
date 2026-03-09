@@ -68,7 +68,7 @@ dependencies {
     include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.2")))
 
     autoImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    autoImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    autoImplementation ("net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}")
 	if (!unobfuscated) {
 		if (mcVersion < 12003) {
 			autoCompileOnly ("com.github.End-Tech:syncmatica:${project.syncmatica_version}") {
@@ -80,25 +80,46 @@ dependencies {
 			}
 		}
 	}
-	include(autoImplementation("me.fallenbreath:conditional-mixin-fabric:0.6.4")) { transitive = false }
+	include(autoImplementation("me.fallenbreath:conditional-mixin-fabric:0.6.4")) {
+		exclude group: "net.fabricmc.fabric-api"
+		transitive = false
+	}
 	if (!unobfuscated) {
-		autoRuntimeOnly 'me.fallenbreath:mixin-auditor:0.2.0-u'
-		include(autoImplementation("io.github.hotpad100c:ryansrenderingkit:${project.ryansrenderingkit_version}"))
+		autoRuntimeOnly ('me.fallenbreath:mixin-auditor:0.2.0-u') {
+			exclude group: "net.fabricmc.fabric-api"
+		}
+		if (mcVersion >= 12110) {
+			include(autoImplementation("io.github.hotpad100c:ryansrenderingkit:${project.ryansrenderingkit_version}"))
+		} else {
+			include(autoImplementation("io.github.hotpad100c:ryansrenderingkit:${project.ryansrenderingkit_version}")) {
+				exclude group: "net.fabricmc.fabric-api"
+			}
+		}
 	} else {
-		autoRuntimeOnly 'me.fallenbreath:mixin-auditor:0.2.0-o'
-		include(implementation(name: 'ryansrenderingkit', version: '1.0.5+26.1'))
+		autoRuntimeOnly ('me.fallenbreath:mixin-auditor:0.2.0-o') {
+			exclude group: "net.fabricmc.fabric-api"
+		}
+		include(autoImplementation(name: 'ryansrenderingkit', version: '1.0.5+26.1')) {
+			exclude group: "net.fabricmc.fabric-api"
+		}
 	}
 	//Lithium
 	if (mcVersion >= 12006) {
-		autoCompileOnly(project.lithium_dependency)
+		autoCompileOnly(project.lithium_dependency) {
+			exclude group: "net.fabricmc.fabric-api"
+		}
 	}
 
     // Carpet
-    autoImplementation "carpet:fabric-carpet:${project.carpet_core_version}"
+    autoImplementation ("carpet:fabric-carpet:${project.carpet_core_version}") {
+		exclude group: "net.fabricmc.fabric-api"
+	}
 
 	//GCA
 	if (mcVersion >= 12006 && !unobfuscated) {
-		autoCompileOnly "${project.gca_version}"
+		autoCompileOnly ("${project.gca_version}") {
+			exclude group: "net.fabricmc.fabric-api"
+		}
 	}
 }
 
@@ -111,7 +132,7 @@ JavaVersion MIXIN_COMPATIBILITY_LEVEL = JAVA_COMPATIBILITY
 
 loom {
     accessWidenerPath = file("src/main/resources/carpet-igny-addition.accesswidener")
-	def commonVmArgs = ['-Dmixin.debug.export=true', '-Dmixin.debug.countInjections=true']
+	def commonVmArgs = ['-Dmixin.debug.export=true', '-Dmixin.debug.countInjections=false']
 	runConfigs.configureEach {
 		// to make sure it generates all "Minecraft Client (:subproject_name)" applications
 		ideConfigGenerated = true
@@ -122,13 +143,13 @@ loom {
 		// run server, but with mixin auditor enabled
 		serverMixinAudit {
 			server()
-			vmArgs('-DmixinAuditor.audit=true', '-Dmixin.debug.countInjections=false')
+			vmArgs(*commonVmArgs, '-DmixinAuditor.audit=true')
 		}
 
 		// run client, but with mixin auditor enabled
 		clientMixinAudit {
 			client()
-			vmArgs('-DmixinAuditor.audit=true', '-DmixinAuditor.when=game_init', '-Dmixin.debug.countInjections=false')
+			vmArgs(*commonVmArgs, '-DmixinAuditor.audit=true', '-DmixinAuditor.when=game_init')
 		}
 	}
 }
