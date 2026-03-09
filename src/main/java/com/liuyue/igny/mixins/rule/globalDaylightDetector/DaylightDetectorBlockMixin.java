@@ -46,7 +46,7 @@ public class DaylightDetectorBlockMixin {
             while (mutableCheckPos.getY() <= instance.getMaxBuildHeight()) {
                 net.minecraft.world.level.block.state.BlockState checkState = instance.getBlockState(mutableCheckPos);
                 //#if MC >= 26.1
-                //$$ if (((BlockStateBaseAccessor) checkState).getLightBlock() >= 15 && !checkState.is(Blocks.BEDROCK)) {
+                //$$ if (checkState.getLightDampening() >= 15 && !checkState.is(Blocks.BEDROCK)) {
                 //#elseif MC >= 12102
                 //$$ if (checkState.getLightBlock() >= 15 && !checkState.is(Blocks.BEDROCK)) {
                 //#else
