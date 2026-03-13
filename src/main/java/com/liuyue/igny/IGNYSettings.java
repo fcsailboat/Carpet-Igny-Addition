@@ -535,14 +535,6 @@ public class IGNYSettings
     )
     public static Boolean globalDaylightDetector = false;
 
-    //#if MC >= 12102
-    //$$ @Rule(
-    //$$         categories = {IGNY},
-    //$$         options = {"false", "true"}
-    //$$ )
-    //$$ public static Boolean looseEnderPearlChunkLoading = false;
-    //#endif
-
     @Rule(
             categories = {IGNY, CREATIVE, FEATURE},
             options = {"false", "true"}

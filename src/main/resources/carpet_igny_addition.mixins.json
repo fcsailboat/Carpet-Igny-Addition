@@ -84,7 +84,6 @@
     "rule.lightningBoltNoFire.EntityMixin",
     "rule.lightningBoltNoFire.LightningBoltMixin",
     "rule.locatorBarNoFakePlayer.ServerWaypointManagerMixin",
-    "rule.looseEnderPearlChunkLoading.ThrownEnderpearlMixin",
     "rule.maxEndPortalSize.EnderEyeItemMixin",
     "rule.noOwnerTntLootingIII.EnchantedCountIncreaseFunctionMixin",
     "rule.noteBlockSelfCheck.NoteBlockMixin",

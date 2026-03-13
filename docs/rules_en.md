@@ -685,15 +685,6 @@ Daylight detectors are no longer restricted by dimensions. In the absence of sky
 - Suggested options: `false`, `true`
 - Categories: `IGNY`, `SURVIVAL`, `FEATURE`
 
-## looseEnderPearlChunkLoading `🐛Beta` `MC>=1.21.2`
-
-Prevents Ender Pearl loading tickets from expiring completely before being renewed. Instead, it refreshes the ticket when there are 5 game ticks remaining before timeout.
-
-- Type: `boolean`
-- Default value: `false`
-- Suggested options: `false`, `true`
-- Categories: `IGNY`
-
 ## noteBlockSelfCheck `🐛Beta`
 
 When placed, a note block checks its block state once, just like a piston.
