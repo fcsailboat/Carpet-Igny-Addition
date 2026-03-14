@@ -29,7 +29,6 @@ public class IGNYServer implements CarpetExtension {
 //    public static final String compactName = MOD_ID.replace("-", "");
     public static final Logger LOGGER = LogManager.getLogger(fancyName);
     private static MinecraftServer minecraftServer;
-    public static SettingsManager settingsManager;
     private static final IGNYServer INSTANCE = new IGNYServer();
     //#if MC < 12005
     //$$ public static final ResourceLocation HIGHLIGHT_PACKET_ID = new ResourceLocation(MOD_ID, "highlight_block");
@@ -51,7 +50,6 @@ public class IGNYServer implements CarpetExtension {
 
     @Override
     public void onGameStarted() {
-        settingsManager = new SettingsManager(IGNYServer.getInstance().version(), MOD_ID, "IGNY");
         CarpetServer.settingsManager.parseSettingsClass(IGNYSettings.class);
     }
 

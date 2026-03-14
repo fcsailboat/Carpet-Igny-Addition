@@ -29,6 +29,8 @@ public class IGNYSettings
 
     public static List<BlockPos> noUpdatePos = new ArrayList<>();
 
+    public static final Map<String, List<String>> modRuleTree = new HashMap<>();
+
     //假玩家生成内存泄露修复
     public static final ThreadLocal<Boolean> fakePlayerSpawnMemoryLeakFix = ThreadLocal.withInitial(() -> false);
 
@@ -546,4 +548,10 @@ public class IGNYSettings
             options = {"false", "true"}
     )
     public static Boolean noCreativeDestroyAttachmentDrops = false;
+
+    @Rule(
+            categories = {IGNY},
+            options = {"false", "true"}
+    )
+    public static Boolean showRuleSource = false;
 }

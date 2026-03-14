@@ -9,15 +9,19 @@ import com.liuyue.igny.IGNYServerMod;
 import com.liuyue.igny.data.RuleChangeDataManager;
 import com.liuyue.igny.IGNYSettings;
 import com.liuyue.igny.tracker.RuleChangeTracker;
+import com.liuyue.igny.utils.RuleUtils;
 import net.minecraft.commands.CommandSourceStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import carpet.utils.Translations;
 
@@ -33,22 +37,54 @@ public abstract class SettingsManagerMixin {
             )
     )
     private void addOperationInfoAfterCurrentValue(CommandSourceStack source, CarpetRule<?> rule, CallbackInfoReturnable<Integer> cir) {
-        if (!IGNYSettings.showRuleChangeHistory) return;
         if (rule != null) {
-            List<RuleChangeDataManager.RuleChangeRecord> history = RuleChangeDataManager.getLastChange(rule.name());
-            if (!history.isEmpty()) {
-                for (RuleChangeDataManager.RuleChangeRecord lastChange : history) {
-                    if (lastChange.isValid()) {
-                        carpet.utils.Messenger.m(source,
-                                "g  " + Translations.tr("igny.settings.record.operator", "Operator") + ": ", "w " + lastChange.sourceName,
-                                "g  " + Translations.tr("igny.settings.record.change_time", "ChangeTime") + ": ", "w " + lastChange.formattedTime,
-                                "g  " + Translations.tr("igny.settings.record.raw_value", "RawValue") + ": ", "w " + objectToString(lastChange.rawValue),
-                                "g  " + Translations.tr("igny.settings.record.new_value", "NewValue") + ": ", "w " + lastChange.userInput
-                        );
+            if (IGNYSettings.showRuleSource) {
+                Messenger.m(source,
+                        "g " + Translations.tr("igny.settings.source", "Source") + ": ", "w " + getModIdByRuleName(rule.name())
+                );
+            }
+            if (IGNYSettings.showRuleChangeHistory) {
+                List<RuleChangeDataManager.RuleChangeRecord> history = RuleChangeDataManager.getLastChange(rule.name());
+                if (!history.isEmpty()) {
+                    for (RuleChangeDataManager.RuleChangeRecord lastChange : history) {
+                        if (lastChange.isValid()) {
+                            Messenger.m(source,
+                                    "g  " + Translations.tr("igny.settings.record.operator", "Operator") + ": ", "w " + lastChange.sourceName,
+                                    "g  " + Translations.tr("igny.settings.record.change_time", "ChangeTime") + ": ", "w " + lastChange.formattedTime,
+                                    "g  " + Translations.tr("igny.settings.record.raw_value", "RawValue") + ": ", "w " + objectToString(lastChange.rawValue),
+                                    "g  " + Translations.tr("igny.settings.record.new_value", "NewValue") + ": ", "w " + lastChange.userInput
+                            );
+                        }
                     }
                 }
             }
         }
+    }
+
+    @Inject(method = "addCarpetRule", at = @At(value = "TAIL"))
+    private void addCarpetRule(CarpetRule<?> rule, CallbackInfo ci) {
+        String modId = getModIdFromClass();
+        IGNYSettings.modRuleTree
+                .computeIfAbsent(modId, k -> new ArrayList<>())
+                .add(rule.name());
+    }
+
+    @Unique
+    private static String getModIdFromClass() {
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+        for (int i = 0; i < stack.length; i++) {
+            if ("addCarpetRule".equals(stack[i].getMethodName())) {
+                int callerIndex = i + 1;
+                if (callerIndex < stack.length) {
+                    String clazzName = stack[callerIndex].getClassName();
+                    try {
+                        return RuleUtils.getModIdFromClass(Class.forName(clazzName));
+                    } catch (ClassNotFoundException ignored) {}
+                }
+                break;
+            }
+        }
+        return "carpet";
     }
 
     @Unique
@@ -56,6 +92,16 @@ public abstract class SettingsManagerMixin {
         if (obj == null) return "null";
         if (obj instanceof Boolean) return (Boolean) obj ? "true" : "false";
         return obj.toString();
+    }
+
+    @Unique
+    public String getModIdByRuleName(String ruleName) {
+        for (Map.Entry<String, List<String>> entry : IGNYSettings.modRuleTree.entrySet()) {
+            if (entry.getValue().contains(ruleName)) {
+                return entry.getKey();
+            }
+        }
+        return "carpet";
     }
 
     @Inject(method = {"setRule", "setDefault"}, at= @At(value = "INVOKE", target = "Lcarpet/api/settings/CarpetRule;set(Lnet/minecraft/commands/CommandSourceStack;Ljava/lang/String;)V", shift = At.Shift.AFTER))

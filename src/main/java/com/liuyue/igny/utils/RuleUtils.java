@@ -4,9 +4,12 @@ import carpet.CarpetServer;
 import carpet.api.settings.CarpetRule;
 import com.liuyue.igny.IGNYServerMod;
 import com.liuyue.igny.IGNYSettings;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 public class RuleUtils {
     //#if MC >= 12005
@@ -36,13 +39,21 @@ public class RuleUtils {
         return false;
     }
 
-    public static <T> T itemStackableWrap(Supplier<T> supplier) {
-        boolean changed = IGNYSettings.itemStackCountChanged.get();
+    public static String getModIdFromClass(Class<?> clazz) {
         try {
-            IGNYSettings.itemStackCountChanged.set(false);
-            return supplier.get();
-        } finally {
-            IGNYSettings.itemStackCountChanged.set(changed);
-        }
+            URL location = clazz.getProtectionDomain().getCodeSource().getLocation();
+            Path classPath = Path.of(location.toURI());
+
+            for (ModContainer mod : FabricLoader.getInstance().getAllMods()) {
+                for (Path path : mod.getOrigin().getPaths()) {
+                    String id = mod.getMetadata().getId();
+                    String classFileName = classPath.getFileName().toString();
+                    if (path.getFileName().toString().equals(classFileName) || classFileName.contains(id)) {
+                        return id;
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+        return "unknown";
     }
 }

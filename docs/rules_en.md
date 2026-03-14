@@ -702,3 +702,12 @@ When a player in Creative Mode breaks a block, any blocks attached to it (suppor
 - Default value: `false`
 - Suggested options: `false`, `true`
 - Categories: `IGNY`, `CREATIVE`, `FEATURE`
+
+## showRuleSource `🐛Beta`
+
+Display the ID of the Mod that registered the current rule in the rule details.
+
+- Type: `boolean`
+- Default value: `false`
+- Suggested options: `false`, `true`
+- Categories: `IGNY`

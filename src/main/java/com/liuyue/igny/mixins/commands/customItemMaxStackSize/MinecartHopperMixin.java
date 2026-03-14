@@ -22,7 +22,7 @@
 
 package com.liuyue.igny.mixins.commands.customItemMaxStackSize;
 
-import com.liuyue.igny.utils.RuleUtils;
+import com.liuyue.igny.IGNYSettings;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.world.entity.vehicle.MinecartHopper;
@@ -37,8 +37,16 @@ import org.spongepowered.asm.mixin.Mixin;
 //$$ @Mixin(DummyClass.class)
 //#endif
 public class MinecartHopperMixin {
+    //#if >= 12006
     @WrapMethod(method = "tick")
     private void tick(Operation<Void> original) {
-        RuleUtils.itemStackableWrap(original::call);
+        boolean changed = IGNYSettings.itemStackCountChanged.get();
+        try {
+            IGNYSettings.itemStackCountChanged.set(false);
+            original.call();
+        } finally {
+            IGNYSettings.itemStackCountChanged.set(changed);
+        }
     }
+    //#endif
 }

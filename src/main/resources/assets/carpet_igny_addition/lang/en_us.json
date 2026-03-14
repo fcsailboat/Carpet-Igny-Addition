@@ -9,6 +9,7 @@
   "igny.settings.command.version": "Version",
   "igny.settings.command.total_rules": "total rules",
   "igny.settings.failure.unknown_entity": "Unknown Entity ID : %s",
+  "igny.settings.source": "Source",
 
   "igny.command.enderchest.no_permission": "You don't have permission to drop ender chest items",
   "igny.command.enderchest.real_player_op_only": "Only operators can drop ender chest items of real players",
@@ -211,5 +212,6 @@
   "carpet.rule.globalDaylightDetector.desc": "Daylight detectors are no longer restricted by dimensions. In the absence of skylight, they will calculate brightness based on the Overworld time",
   "carpet.rule.looseEnderPearlChunkLoading.desc": "Prevents Ender Pearl loading tickets from expiring completely before being renewed. Instead, it refreshes the ticket when there are 5 game ticks remaining before timeout",
   "carpet.rule.noteBlockSelfCheck.desc": "When placed, a note block checks its block state once, just like a piston",
-  "carpet.rule.noCreativeDestroyAttachmentDrops.desc": "When a player in Creative Mode breaks a block, any blocks attached to it (support-dependent blocks) will not drop as items when they are destroyed"
+  "carpet.rule.noCreativeDestroyAttachmentDrops.desc": "When a player in Creative Mode breaks a block, any blocks attached to it (support-dependent blocks) will not drop as items when they are destroyed",
+  "carpet.rule.showRuleSource.desc": "Display the ID of the Mod that registered the current rule in the rule details"
 }
