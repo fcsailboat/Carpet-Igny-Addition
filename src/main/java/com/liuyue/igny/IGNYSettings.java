@@ -37,34 +37,34 @@ public class IGNYSettings
     public static final ThreadLocal<Boolean> itemStackCountChanged = ThreadLocal.withInitial(() -> true);
 
     @Rule(
-            categories = {IGNY,SURVIVAL,FEATURE}
+            categories = {IGNY, SURVIVAL, FEATURE}
     )
     public static boolean wardenNeverDig = false;
 
     @Rule(
-            categories = {IGNY,SURVIVAL,FEATURE}
+            categories = {IGNY, SURVIVAL, FEATURE}
     )
     public static boolean playerLevitationFreeShulkerBullet = false;
 
     @Rule(
-            categories = {IGNY,SURVIVAL,FEATURE}
+            categories = {IGNY, SURVIVAL, FEATURE}
     )
     public static boolean playerMiningFatigueFreeGuardian = false;
 
     @Rule(
-            categories = {IGNY,COMMAND,FEATURE},
+            categories = {IGNY, COMMAND, FEATURE},
             options = {"true", "false"}
     )
     public static boolean showRuleChangeHistory = false;
 
     @Rule(
-            categories = {IGNY,SURVIVAL,FEATURE},
+            categories = {IGNY, SURVIVAL, FEATURE},
             options = {"true", "false"}
     )
     public static boolean fakePlayerCanPush = true;
 
     @Rule(
-            categories = {IGNY,SURVIVAL,FEATURE},
+            categories = {IGNY, SURVIVAL, FEATURE},
             options = {"true", "false"}
     )
     public static Boolean wetSpongeCanAbsorbLava = false;

@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.Mixin;
 //$$ @Mixin(DummyClass.class)
 //#endif
 public class MinecartHopperMixin {
-    //#if >= 12006
+    //#if MC >= 12006
     @WrapMethod(method = "tick")
     private void tick(Operation<Void> original) {
         boolean changed = IGNYSettings.itemStackCountChanged.get();

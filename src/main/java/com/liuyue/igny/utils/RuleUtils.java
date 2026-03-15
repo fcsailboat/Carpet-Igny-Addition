@@ -48,7 +48,7 @@ public class RuleUtils {
         return false;
     }
 
-    public static String getModIdFromClass(Class<?> clazz) {
+    public static String getExtensionModIdFromClass(Class<?> clazz) {
         try {
             for (String modId : IGNYServerMod.CARPET_ADDITION_MOD_IDS) {
                 ModContainer container = FabricLoader.getInstance().getModContainer(modId).orElse(null);

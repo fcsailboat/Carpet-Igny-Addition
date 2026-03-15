@@ -78,7 +78,7 @@ public abstract class SettingsManagerMixin {
                 if (callerIndex < stack.length) {
                     String clazzName = stack[callerIndex].getClassName();
                     try {
-                        return RuleUtils.getModIdFromClass(Class.forName(clazzName));
+                        return RuleUtils.getExtensionModIdFromClass(Class.forName(clazzName));
                     } catch (ClassNotFoundException ignored) {}
                 }
                 break;

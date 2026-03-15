@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class SettingsManagerMixin {
     @Inject(method = "parseSettingsClass", at = @At(value = "TAIL"))
     private static void parseSettingsClass(Class<?> settingsClass, CallbackInfo ci) {
-        String modId = RuleUtils.getModIdFromClass(settingsClass);
+        String modId = RuleUtils.getExtensionModIdFromClass(settingsClass);
         Arrays.stream(settingsClass.getDeclaredFields()).forEach(field -> {
             String ruleName = field.getName();
             if (CarpetServer.settingsManager.getCarpetRule(ruleName) != null) {
