@@ -10,12 +10,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerGameMode.class)
-public class ServerPlayerGameModeMixin {
+public abstract class ServerPlayerGameModeMixin {
+    @Shadow
+    public abstract InteractionResult useItem(ServerPlayer player, Level level, ItemStack itemStack, InteractionHand hand);
+
     @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
     private void useItemOn(ServerPlayer player, Level level, ItemStack stack, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
         if (IGNYSettings.prioritizeFlyingUseItem && level != null && !level.getBlockState(hitResult.getBlockPos()).isAir()) {
@@ -28,7 +32,7 @@ public class ServerPlayerGameModeMixin {
                     return;
                 }
                 if (!itemStack.isEmpty() && !(itemStack.getItem() instanceof BlockItem)) {
-                    cir.setReturnValue(InteractionResult.PASS);
+                    cir.setReturnValue(this.useItem(player, level, stack, hand));
                 }
             }
         }
