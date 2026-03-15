@@ -10,13 +10,13 @@ public class RuleChangeTracker {
             RuleChangeDataManager.setServer(server);
     }
 
-    public static void ruleChanged(CommandSourceStack source, carpet.api.settings.CarpetRule<?> rule, String userInput) {
+    public static void ruleChanged(CommandSourceStack source, carpet.api.settings.CarpetRule<?> rule, Object rawValue, String userInput) {
             String sourceName = getSourceName(source);
             long timestamp = System.currentTimeMillis();
 
             RuleChangeDataManager.recordRuleChange(
                     rule.name(),
-                    rule.value(),
+                    rawValue,
                     userInput,
                     sourceName,
                     timestamp
