@@ -16,7 +16,7 @@ public class ComponentTranslate {
     public static Map<String, String> getTranslationFromResourcePath(String lang) {
         InputStream langFile = ComponentTranslate.class
                 .getClassLoader()
-                .getResourceAsStream("assets/carpet_igny_addition/lang/%s.json".formatted(lang));
+                .getResourceAsStream("assets/carpet-igny-addition/lang/%s.json".formatted(lang));
 
         if (langFile == null) {
             return Collections.emptyMap();
