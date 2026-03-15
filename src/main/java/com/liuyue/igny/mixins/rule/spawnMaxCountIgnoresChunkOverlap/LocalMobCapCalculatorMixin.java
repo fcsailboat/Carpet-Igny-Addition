@@ -29,11 +29,9 @@ public class LocalMobCapCalculatorMixin {
 
     @Inject(method = "canSpawn", at = @At("HEAD"))
     private void canSpawn(MobCategory category, ChunkPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (server == null) {
-            List<ServerPlayer> serverPlayers = this.getPlayersNear(pos);
-            assert serverPlayers != null;
-            server = serverPlayers.getFirst().getServer();
-        }
+        List<ServerPlayer> serverPlayers = this.getPlayersNear(pos);
+        assert serverPlayers != null;
+        server = serverPlayers.getFirst().level().getServer();
     }
 
     @Mixin(targets = "net.minecraft.world.level.LocalMobCapCalculator$MobCounts")
