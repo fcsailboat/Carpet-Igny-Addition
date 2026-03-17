@@ -23,7 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FlintAndSteelItem.class)
 public class FlintAndSteelItemMixin {
-
     @Inject(method = "useOn", at = @At("HEAD"), cancellable = true)
     private void onUseOn(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         if (!IGNYSettings.generateNetherPortal) {

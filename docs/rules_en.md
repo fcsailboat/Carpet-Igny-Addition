@@ -711,3 +711,30 @@ Display the ID of the Mod that registered the current rule in the rule details.
 - Default value: `false`
 - Suggested options: `false`, `true`
 - Categories: `IGNY`
+
+## theEndCanCreateNetherPortal `🐛Beta`
+
+Allows Nether portals to be created and activated in the End dimension.
+
+- Type: `boolean`
+- Default value: `false`
+- Suggested options: `false`, `true`
+- Categories: `IGNY`, `FEATURE`
+
+## renewableEndGatewayPortal `🐛Beta`
+
+Allows players to create an End Gateway portal by surrounding an air block with Dragon Eggs at the same height and lighting a fire in the center.
+
+- Type: `boolean`
+- Default value: `false`
+- Suggested options: `false`, `true`
+- Categories: `IGNY`, `FEATURE`
+
+## endGatewayPortalNoCooldown `🐛Beta`
+
+Removes the 40gt cooldown for End Gateways, whether triggered by an entity entry or the periodic 2400gt cooldown.
+
+- Type: `boolean`
+- Default value: `false`
+- Suggested options: `false`, `true`
+- Categories: `IGNY`, `FEATURE`

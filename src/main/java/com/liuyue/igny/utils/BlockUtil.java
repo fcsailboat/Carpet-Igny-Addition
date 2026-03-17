@@ -6,7 +6,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockUtils {
+@SuppressWarnings("unused")
+public class BlockUtil {
     public static String getDisplayName(BlockState state) {
         try {
             Component comp = state.getBlock().getName();

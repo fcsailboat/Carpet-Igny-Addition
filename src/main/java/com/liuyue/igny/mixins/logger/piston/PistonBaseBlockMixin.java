@@ -5,7 +5,7 @@ import carpet.utils.Messenger;
 import carpet.utils.Translations;
 import com.liuyue.igny.helper.PistonResolveContext;
 import com.liuyue.igny.logging.IGNYLoggerRegistry;
-import com.liuyue.igny.utils.BlockUtils;
+import com.liuyue.igny.utils.BlockUtil;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -84,7 +84,7 @@ public abstract class PistonBaseBlockMixin {
             MutableComponent hover = Component.empty();
             hover.append(Component.literal(sTr("igny.logger.piston.pulled.blocks", toPull.size())));
             for (BlockPos original : toPull) {
-                String name = BlockUtils.getTranslatedName(level.getBlockState(original).getBlock()).getString();
+                String name = BlockUtil.getTranslatedName(level.getBlockState(original).getBlock()).getString();
                 BlockPos newPos = original.relative(direction.getOpposite());
                 hover.append(Component.literal("\n• " + name + " @ " + original.toShortString() + " → " + newPos.toShortString()));
             }
@@ -133,7 +133,7 @@ public abstract class PistonBaseBlockMixin {
                 .append(Component.literal(sTr("igny.logger.piston.hover.position", pistonPos.toShortString())));
 
         return Component.literal("[")
-                .append(BlockUtils.getTranslatedName(block))
+                .append(BlockUtil.getTranslatedName(block))
                 .append("] ")
                 .withStyle(s -> s
                                 //#if MC >= 12105
@@ -166,7 +166,7 @@ public abstract class PistonBaseBlockMixin {
                 if (!list.isEmpty()) {
                     hover.append(Component.literal(sTr("igny.logger.piston.pushed.blocks", list.size())));
                     for (BlockPos original : list) {
-                        String name = BlockUtils.getTranslatedName(level.getBlockState(original).getBlock()).getString();
+                        String name = BlockUtil.getTranslatedName(level.getBlockState(original).getBlock()).getString();
                         BlockPos newPos = original.relative(direction);
                         hover.append(Component.literal("\n• " + name + " @ " + original.toShortString() + " → " + newPos.toShortString()));
                     }
@@ -177,7 +177,7 @@ public abstract class PistonBaseBlockMixin {
                     }
                     hover.append(Component.literal(sTr("igny.logger.piston.destroyed.blocks", list2.size())));
                     for (BlockPos original : list2) {
-                        String name = BlockUtils.getTranslatedName(level.getBlockState(original).getBlock()).getString();
+                        String name = BlockUtil.getTranslatedName(level.getBlockState(original).getBlock()).getString();
                         hover.append(Component.literal("\n• " + name + " @ " + original.toShortString()));
                     }
                 }
@@ -238,7 +238,7 @@ public abstract class PistonBaseBlockMixin {
             } else if (reason.type == PistonResolveContext.FailureType.UNPUSHABLE_BLOCK && reason.blockPos != null) {
                 BlockState bs = level.getBlockState(reason.blockPos);
                 if (bs.is(Blocks.MOVING_PISTON)) return;
-                hover.append(cTr("igny.logger.piston.failure.unpushable_block")).append(Component.literal("\n• " + BlockUtils.getDisplayName(bs) + " @ " + reason.blockPos.toShortString()));
+                hover.append(cTr("igny.logger.piston.failure.unpushable_block")).append(Component.literal("\n• " + BlockUtil.getDisplayName(bs) + " @ " + reason.blockPos.toShortString()));
             } else {
                 hover.append(cTr("igny.logger.piston.failure.unknown"));
             }

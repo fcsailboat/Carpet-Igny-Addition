@@ -21,7 +21,6 @@ public class SettingsManagerMixin {
                     IGNYSettings.modRuleTree
                             .computeIfAbsent(modId, k -> new ArrayList<>())
                             .add(ruleName);
-
                 })
         );
     }
