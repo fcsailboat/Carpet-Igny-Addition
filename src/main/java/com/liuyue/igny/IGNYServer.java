@@ -123,16 +123,20 @@ public class IGNYServer implements CarpetExtension {
             if (IGNYSettings.betterSprintGameTick) {
                 if (!TickUtil.shouldSprint(minecraftServer)) {
                     //#if MC <= 11904
-                    //$$ TickSpeed.tickrate_advance(null, 20, null, null);
+                    //$$ TickSpeed.tickrate(20);
                     //#else
                     manager.setTickRate(20);
                     //#endif
                 }
                 return;
             }
+            //#if MC <= 11904
+            //$$ if (TickUtil.shouldSprint(minecraftServer) && TickSpeed.tickrate != IGNYSettings.originalTPS) {
+            //#else
             if (TickUtil.shouldSprint(minecraftServer) && manager.tickrate() != IGNYSettings.originalTPS) {
+                //#endif
                 //#if MC <= 11904
-                //$$ TickSpeed.tickrate_advance(null, IGNYSettings.originalTPS, null, null);
+                //$$ TickSpeed.tickrate(IGNYSettings.originalTPS);
                 //#else
                 manager.setTickRate(IGNYSettings.originalTPS);
                 //#endif
