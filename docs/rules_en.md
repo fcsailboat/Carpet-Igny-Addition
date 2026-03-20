@@ -760,3 +760,12 @@ When conditions are not met, tick sprint (warp) will pause and the tick rate wil
 - Default value: `false`
 - Suggested options: `false`, `true`, `playerJoin`
 - Categories: `IGNY`, `SURVIVAL`, `FEATURE`
+
+## tripwireHookDupeReintroduced `🐛Beta` `MC>=26.1`
+
+Reintroduces tripwire hook duplication by skipping block state checks upon destruction, reverting changes made in 26.1-pre-2.
+
+- Type: `boolean`
+- Default value: `false`
+- Suggested options: `false`, `true`
+- Categories: `IGNY`, `FEATURE`

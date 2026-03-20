@@ -578,4 +578,12 @@ public class IGNYSettings
             options = {"false", "true", "playerJoin"}
     )
     public static String betterSprintGameTick = "false";
+
+    //#if MC >= 26.1
+    //$$ @Rule(
+    //$$         categories = {IGNY, FEATURE},
+    //$$         options = {"false", "true"}
+    //$$ )
+    //$$ public static Boolean tripwireHookDupeReintroduced = false;
+    //#endif
 }

@@ -220,5 +220,6 @@
   "carpet.rule.liquidSourceCanDestroy.desc": "Allows fluid sources to be targeted and destroyed",
   "carpet.rule.betterSprintGameTick.desc": "When conditions are not met, tick sprint (warp) will pause and the tick rate will revert to 20",
   "carpet.rule.betterSprintGameTick.extra.0": "true: Pauses when any real player is present on the server",
-  "carpet.rule.betterSprintGameTick.extra.1": "playerJoin: Pauses when a new real player joins, until they log out"
+  "carpet.rule.betterSprintGameTick.extra.1": "playerJoin: Pauses when a new real player joins, until they log out",
+  "carpet.rule.tripwireHookDupeReintroduced.desc": "Reintroduces tripwire hook duplication by skipping block state checks upon destruction, reverting changes made in 26.1-pre-2"
 }

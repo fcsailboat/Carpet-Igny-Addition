@@ -139,6 +139,7 @@
     "rule.trialSpawnerCoolDown.TrialSpawnerDataMixin",
     "rule.trialSpawnerCoolDown.TrialSpawnerMixin",
     "rule.trialSpawnerLoot.TrialSpawnerMixin",
+    "rule.tripwireHookDupeReintroduced.TripWireHookBlockMixin",
     "rule.wardenNeverDig.WardenMixin",
     "rule.wetSpongeCanAbsorbLava.WetSpongeBlockMixin"
   ],

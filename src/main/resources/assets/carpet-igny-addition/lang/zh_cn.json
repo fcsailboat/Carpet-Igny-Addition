@@ -300,5 +300,7 @@
   "carpet.rule.betterSprintGameTick.name": "更好地加速游戏刻",
   "carpet.rule.betterSprintGameTick.desc": "当不满足条件的时候，tick sprint(warp)会暂停，tick rate变为20",
   "carpet.rule.betterSprintGameTick.extra.0": "true: 条件：服务器存在真人玩家时",
-  "carpet.rule.betterSprintGameTick.extra.1": "playerJoin: 条件：服务器加入新的真人玩家时，直到他退出服务器"
+  "carpet.rule.betterSprintGameTick.extra.1": "playerJoin: 条件：服务器加入新的真人玩家时，直到他退出服务器",
+  "carpet.rule.tripwireHookDupeReintroduced.name": "重新引入绊线钩复制",
+  "carpet.rule.tripwireHookDupeReintroduced.desc": "重新引入绊线钩被破坏时，不检查方块状态而触发的绊线钩复制，回退了26.1-pre-2的更改"
 }
