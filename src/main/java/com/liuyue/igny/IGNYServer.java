@@ -107,18 +107,11 @@ public class IGNYServer implements CarpetExtension {
 
     @Override
     public void onPlayerLoggedOut(ServerPlayer player) {
-        IGNYSettings.sprintWhitelistPlayers.remove(player.getUUID());
         checkTickRate();
     }
 
     public static void onRuleChanged(CarpetRule<?> rule) {
         if (rule.name().equals("betterSprintGameTick")) {
-            IGNYSettings.sprintWhitelistPlayers.clear();
-            if (IGNYSettings.betterSprintGameTick.equals("playerJoin") && minecraftServer != null) {
-                for (ServerPlayer player : minecraftServer.getPlayerList().getPlayers()) {
-                    IGNYSettings.sprintWhitelistPlayers.add(player.getUUID());
-                }
-            }
             checkTickRate();
         }
     }

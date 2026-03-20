@@ -1,15 +1,18 @@
 package com.liuyue.igny.mixins.rule.betterSprintGameTick;
 
+import com.liuyue.igny.IGNYSettings;
 import com.liuyue.igny.utils.TickUtil;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerTickRateManager;
+import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerTickRateManager.class)
@@ -28,5 +31,17 @@ public class ServerTickRateManagerMixin {
         if (!TickUtil.shouldSprint(this.server)) {
             cir.setReturnValue(false);
         }
+    }
+
+    @Inject(method = "requestGameToSprint", at = @At(value = "RETURN"))
+    private void requestGameToSprint(int sprintTime, CallbackInfoReturnable<Boolean> cir) {
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+            IGNYSettings.sprintWhitelistPlayers.add(player.getUUID());
+        }
+    }
+
+    @Inject(method = "finishTickSprint", at = @At(value = "RETURN"))
+    private void finishTickSprint(CallbackInfo ci) {
+        IGNYSettings.sprintWhitelistPlayers.clear();
     }
 }
