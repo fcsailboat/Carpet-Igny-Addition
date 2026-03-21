@@ -18,7 +18,7 @@ public class ItemEntityMixin {
         if (!self.level().isClientSide()){
             ItemStack stack = self.getItem();
             if (stack.isEmpty()) return;
-            if (!CustomPickupDataManager.canPickUp(player.getName().getString(), BuiltInRegistries.ITEM.getKey(stack.getItem()).toString())) {
+            if (!CustomPickupDataManager.INSTANCE.canPickUp(player.getName().getString(), BuiltInRegistries.ITEM.getKey(stack.getItem()).toString())) {
                 ci.cancel();
             }
         }

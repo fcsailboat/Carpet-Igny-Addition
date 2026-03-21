@@ -33,7 +33,7 @@ public class CustomItemMaxStackSizeCommand {
                                         .executes(context -> {
                                             String pattern = getRawArgumentString(context, "predicate");
                                             int count = IntegerArgumentType.getInteger(context, "count");
-                                            CustomItemMaxStackSizeDataManager.set(pattern, count, commandBuildContext);
+                                            CustomItemMaxStackSizeDataManager.INSTANCE.set(pattern, count, commandBuildContext);
                                             Component nameDisplay = getNameComponent(pattern);
                                             context.getSource().sendSuccess(
                                                     //#if MC > 11904
@@ -45,10 +45,10 @@ public class CustomItemMaxStackSizeCommand {
                                         }))))
                 .then(Commands.literal("remove")
                         .then(Commands.argument("pattern", StringArgumentType.string())
-                                .suggests((context, builder) -> SharedSuggestionProvider.suggest(CustomItemMaxStackSizeDataManager.getCustomStacks().keySet(), builder))
+                                .suggests((context, builder) -> SharedSuggestionProvider.suggest(CustomItemMaxStackSizeDataManager.INSTANCE.getCurrentData().keySet(), builder))
                                 .executes(context -> {
                                     String pattern = StringArgumentType.getString(context, "pattern");
-                                    CustomItemMaxStackSizeDataManager.remove(pattern, commandBuildContext);
+                                    CustomItemMaxStackSizeDataManager.INSTANCE.remove(pattern, commandBuildContext);
                                     Component nameDisplay = getNameComponent(pattern);
                                     context.getSource().sendSuccess(
                                             //#if MC > 11904
@@ -59,7 +59,7 @@ public class CustomItemMaxStackSizeCommand {
                                 })))
                 .then(Commands.literal("clear")
                         .executes(context -> {
-                            CustomItemMaxStackSizeDataManager.clear();
+                            CustomItemMaxStackSizeDataManager.INSTANCE.clear();
                             context.getSource().sendSuccess(
                                     //#if MC > 11904
                                     () ->
@@ -69,7 +69,7 @@ public class CustomItemMaxStackSizeCommand {
                         }))
                 .then(Commands.literal("list")
                         .executes(context -> {
-                            Map<String, Integer> stacks = CustomItemMaxStackSizeDataManager.getCustomStacks();
+                            Map<String, Integer> stacks = CustomItemMaxStackSizeDataManager.INSTANCE.getCurrentData();
                             if (stacks.isEmpty()) {
                                 context.getSource().sendSuccess(
                                         //#if MC > 11904

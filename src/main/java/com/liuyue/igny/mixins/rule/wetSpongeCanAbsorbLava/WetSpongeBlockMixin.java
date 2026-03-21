@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //#endif
 
 @Mixin(WetSpongeBlock.class)
-public abstract class WetSpongeBlockMixin extends Block{
+public abstract class WetSpongeBlockMixin extends Block {
     public WetSpongeBlockMixin(Properties properties) {
         super(properties);
     }

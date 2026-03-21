@@ -32,7 +32,7 @@ public class PacketUtil {
 
     //#if MC >= 12006
     public static void sendCustomStackSizeToClient(ServerPlayer player) {
-        Map<String, Integer> data = CustomItemMaxStackSizeDataManager.getCustomStacks();
+        Map<String, Integer> data = CustomItemMaxStackSizeDataManager.INSTANCE.getCurrentData();
         if (data.isEmpty()) return;
 
         if (ServerPlayNetworking.canSend(player,

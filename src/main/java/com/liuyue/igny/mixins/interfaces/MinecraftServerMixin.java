@@ -21,9 +21,9 @@ public abstract class MinecraftServerMixin {
         MinecraftServer server = IGNYServer.getInstance().getMinecraftServer();
         if (server != null && server.isRunning()) {
             RuleChangeTracker.init(server);
-            CustomPickupDataManager.setServer(server);
+            CustomPickupDataManager.INSTANCE.setServer(server);
             //#if MC >= 12006
-            CustomItemMaxStackSizeDataManager.setServer(server);
+            CustomItemMaxStackSizeDataManager.INSTANCE.setServer(server);
             //#endif
         }
     }

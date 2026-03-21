@@ -7,14 +7,14 @@ import net.minecraft.server.MinecraftServer;
 public class RuleChangeTracker {
 
     public static void init(MinecraftServer server){
-            RuleChangeDataManager.setServer(server);
+            RuleChangeDataManager.INSTANCE.setServer(server);
     }
 
     public static void ruleChanged(CommandSourceStack source, carpet.api.settings.CarpetRule<?> rule, Object rawValue, String userInput) {
             String sourceName = getSourceName(source);
             long timestamp = System.currentTimeMillis();
 
-            RuleChangeDataManager.recordRuleChange(
+            RuleChangeDataManager.INSTANCE.recordRuleChange(
                     rule.name(),
                     rawValue,
                     userInput,

@@ -47,7 +47,7 @@ public class ItemStackMixin {
 
     @Inject(method = "limitSize", at = @At("HEAD"), cancellable = true)
     private void limitSize(int maxCount, CallbackInfo ci) {
-        int customMax = CustomItemMaxStackSizeDataManager.getCustomStackSize(thisStack);
+        int customMax = CustomItemMaxStackSizeDataManager.INSTANCE.getCustomStackSize(thisStack);
         if (customMax != -1 && !IGNYSettings.itemStackCountChanged.get()) {
             ci.cancel();
         }
@@ -58,7 +58,7 @@ public class ItemStackMixin {
     private void getMaxStackSize(CallbackInfoReturnable<Integer> cir) {
         Item item = thisStack.getItem();
         if (cir.getReturnValue() == item.getDefaultMaxStackSize()) {
-            int customMax = CustomItemMaxStackSizeDataManager.getCustomStackSize(thisStack);
+            int customMax = CustomItemMaxStackSizeDataManager.INSTANCE.getCustomStackSize(thisStack);
             if (IGNYSettings.itemStackCountChanged.get() && customMax != -1) {
                 cir.setReturnValue(customMax);
             }

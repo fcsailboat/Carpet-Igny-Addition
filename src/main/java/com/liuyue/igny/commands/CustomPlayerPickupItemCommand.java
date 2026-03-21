@@ -73,7 +73,7 @@ public class CustomPlayerPickupItemCommand {
         String targetName = StringArgumentType.getString(ctx, "target");
         if (!checkPermission(source, targetName)) return 0;
 
-        CustomPickupDataManager.PlayerSetting setting = CustomPickupDataManager.getOrCreate(targetName);
+        CustomPickupDataManager.PlayerSetting setting = CustomPickupDataManager.INSTANCE.getOrCreate(targetName);
 
         MutableComponent message = Component.translatable("igny.command.customPlayerPickupItem.header", targetName)
                 .withStyle(ChatFormatting.GOLD).append("\n");
@@ -136,9 +136,9 @@ public class CustomPlayerPickupItemCommand {
             }
         }
 
-        CustomPickupDataManager.PlayerSetting setting = CustomPickupDataManager.getOrCreate(targetName);
+        CustomPickupDataManager.PlayerSetting setting = CustomPickupDataManager.INSTANCE.getOrCreate(targetName);
         setting.setMode(mode);
-        CustomPickupDataManager.updateAndSave(targetName, setting);
+        CustomPickupDataManager.INSTANCE.updateAndSave(targetName, setting);
 
         source.sendSuccess(
                 //#if MC > 11904
@@ -154,7 +154,7 @@ public class CustomPlayerPickupItemCommand {
         String targetName = StringArgumentType.getString(ctx, "target");
         if (!checkPermission(source, targetName)) return 0;
 
-        CustomPickupDataManager.PlayerSetting setting = CustomPickupDataManager.getOrCreate(targetName);
+        CustomPickupDataManager.PlayerSetting setting = CustomPickupDataManager.INSTANCE.getOrCreate(targetName);
         Set<String> currentItems = new HashSet<>(setting.getItems());
 
         if (action.equals("clear")) {
@@ -176,7 +176,7 @@ public class CustomPlayerPickupItemCommand {
         }
 
         setting.setItems(currentItems);
-        CustomPickupDataManager.updateAndSave(targetName, setting);
+        CustomPickupDataManager.INSTANCE.updateAndSave(targetName, setting);
 
         source.sendSuccess(
                 //#if MC > 11904
@@ -187,7 +187,7 @@ public class CustomPlayerPickupItemCommand {
     }
 
     private static boolean checkPermission(CommandSourceStack source, String targetName) {
-        CustomPickupDataManager.setServer(source.getServer());
+        CustomPickupDataManager.INSTANCE.setServer(source.getServer());
         if (
             //#if MC >= 12111
             //$$ !Commands.LEVEL_GAMEMASTERS.check(source.permissions())

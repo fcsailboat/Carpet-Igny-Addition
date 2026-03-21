@@ -81,11 +81,11 @@ public class IGNYClientRegister {
                 //$$     for (int i = 0; i < size; i++) {
                 //$$         map.put(buf.readUtf(), buf.readVarInt());
                 //$$     }
-                //$$     client.execute(() -> CustomItemMaxStackSizeDataManager.clientUpdateData(map));
+                //$$     client.execute(() -> CustomItemMaxStackSizeDataManager.INSTANCE.clientUpdateData(map));
                 //$$ }
                 //#else
                 (payload, context) -> context.client().execute(() ->
-                            CustomItemMaxStackSizeDataManager.clientUpdateData(payload.customStacks()
+                            CustomItemMaxStackSizeDataManager.INSTANCE.clientUpdateData(payload.customStacks()
 
                 //#endif
         )));
