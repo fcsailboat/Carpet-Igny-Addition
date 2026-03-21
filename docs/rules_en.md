@@ -703,7 +703,7 @@ When a player in Creative Mode breaks a block, any blocks attached to it (suppor
 - Suggested options: `false`, `true`
 - Categories: `IGNY`, `CREATIVE`, `FEATURE`
 
-## showRuleSource `🐛Beta`
+## showRuleSource
 
 Display the ID of the Mod that registered the current rule in the rule details.
 
@@ -712,7 +712,7 @@ Display the ID of the Mod that registered the current rule in the rule details.
 - Suggested options: `false`, `true`
 - Categories: `IGNY`
 
-## theEndCanCreateNetherPortal `🐛Beta`
+## theEndCanCreateNetherPortal
 
 Allows Nether portals to be created and activated in the End dimension.
 
@@ -721,7 +721,7 @@ Allows Nether portals to be created and activated in the End dimension.
 - Suggested options: `false`, `true`
 - Categories: `IGNY`, `FEATURE`
 
-## renewableEndGatewayPortal `🐛Beta`
+## renewableEndGatewayPortal
 
 Allows players to create an End Gateway portal by surrounding an air block with Dragon Eggs at the same height and lighting a fire in the center.
 
@@ -730,7 +730,7 @@ Allows players to create an End Gateway portal by surrounding an air block with 
 - Suggested options: `false`, `true`
 - Categories: `IGNY`, `FEATURE`
 
-## endGatewayPortalNoCooldown `🐛Beta`
+## endGatewayPortalNoCooldown
 
 Removes the 40gt cooldown for End Gateways, whether triggered by an entity entry or the periodic 2400gt cooldown.
 
@@ -739,7 +739,7 @@ Removes the 40gt cooldown for End Gateways, whether triggered by an entity entry
 - Suggested options: `false`, `true`
 - Categories: `IGNY`, `FEATURE`
 
-## liquidSourceCanDestroy `🐛Beta`
+## liquidSourceCanDestroy
 
 Allows fluid sources to be targeted and destroyed.
 
@@ -748,7 +748,7 @@ Allows fluid sources to be targeted and destroyed.
 - Suggested options: `false`, `true`
 - Categories: `IGNY`, `FEATURE`
 
-## betterSprintGameTick `🐛Beta`
+## betterSprintGameTick
 
 When conditions are not met, tick sprint (warp) will pause and the tick rate will revert to 20.
 
@@ -761,7 +761,7 @@ When conditions are not met, tick sprint (warp) will pause and the tick rate wil
 - Suggested options: `false`, `true`, `playerJoin`
 - Categories: `IGNY`, `SURVIVAL`, `FEATURE`
 
-## tripwireHookDupeReintroduced `🐛Beta` `MC>=26.1`
+## tripwireHookDupeReintroduced `MC>=26.1`
 
 Reintroduces tripwire hook duplication by skipping block state checks upon destruction, reverting changes made in 26.1-pre-2.
 
