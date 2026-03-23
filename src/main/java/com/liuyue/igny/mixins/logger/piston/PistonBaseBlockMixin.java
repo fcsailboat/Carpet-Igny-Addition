@@ -205,26 +205,33 @@ public abstract class PistonBaseBlockMixin {
     @WrapOperation(method = "checkIfExtend", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/piston/PistonStructureResolver;resolve()Z"))
     private boolean wrapResolve(PistonStructureResolver instance, Operation<Boolean> original, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos) {
         PistonResolveContext.startRecording();
-        boolean result = original.call(instance);
-        if (IGNYLoggerRegistry.__piston && !level.isClientSide() && !result) {
-            carpet.logging.Logger logger = carpet.logging.LoggerRegistry.getLogger("piston");
-            if (logger != null && logger.hasOnlineSubscribers()) logPistonExtendFailure(logger, level, pos, true);
+        try {
+            boolean result = original.call(instance);
+            if (IGNYLoggerRegistry.__piston && !level.isClientSide() && !result) {
+                carpet.logging.Logger logger = carpet.logging.LoggerRegistry.getLogger("piston");
+                if (logger != null && logger.hasOnlineSubscribers()) logPistonExtendFailure(logger, level, pos, true);
+            }
+            return result;
+        } finally {
+            PistonResolveContext.stopRecording();
         }
-        PistonResolveContext.stopRecording();
-        return result;
     }
 
     @WrapOperation(method = "moveBlocks", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/piston/PistonStructureResolver;resolve()Z"))
     private boolean wrapPullResolve(PistonStructureResolver instance, Operation<Boolean> original, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos blockPos, @Local(argsOnly = true) boolean extend) {
         if (extend || !IGNYLoggerRegistry.__piston || level.isClientSide()) return original.call(instance);
         PistonResolveContext.startRecording();
-        boolean result = original.call(instance);
-        if (!result) {
-            carpet.logging.Logger logger = carpet.logging.LoggerRegistry.getLogger("piston");
-            if (logger != null && logger.hasOnlineSubscribers()) logPistonExtendFailure(logger, level, blockPos, false);
+        try {
+            boolean result = original.call(instance);
+            if (!result) {
+                carpet.logging.Logger logger = carpet.logging.LoggerRegistry.getLogger("piston");
+                if (logger != null && logger.hasOnlineSubscribers())
+                    logPistonExtendFailure(logger, level, blockPos, false);
+            }
+            return result;
+        } finally {
+            PistonResolveContext.stopRecording();
         }
-        PistonResolveContext.stopRecording();
-        return result;
     }
 
     @Unique

@@ -25,8 +25,6 @@ public class IGNYSettings {
     public static float originalTPS = 20.0f;
     public static final Set<UUID> sprintWhitelistPlayers = new HashSet<>();
 
-
-
     @Rule(
             categories = {IGNY, SURVIVAL, FEATURE}
     )

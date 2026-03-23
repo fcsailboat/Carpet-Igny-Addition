@@ -8,7 +8,6 @@ public class PistonResolveContext {
 
     public static void startRecording() {
         RECORDING.set(true);
-        FAILURE_REASON.set(null);
     }
 
     public static void stopRecording() {

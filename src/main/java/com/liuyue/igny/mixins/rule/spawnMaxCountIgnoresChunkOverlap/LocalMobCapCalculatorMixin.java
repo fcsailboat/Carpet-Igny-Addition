@@ -1,13 +1,13 @@
 package com.liuyue.igny.mixins.rule.spawnMaxCountIgnoresChunkOverlap;
 
 import com.liuyue.igny.IGNYSettings;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LocalMobCapCalculator;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -38,12 +38,15 @@ public class LocalMobCapCalculatorMixin {
 
     @Mixin(targets = "net.minecraft.world.level.LocalMobCapCalculator$MobCounts")
     static class MobCountsMixin {
-        @WrapOperation(method = "canSpawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/MobCategory;getMaxInstancesPerChunk()I"), require = 0)
-        private int canSpawn(MobCategory instance, Operation<Integer> original) {
+        @Shadow
+        @Final
+        private Object2IntMap<MobCategory> counts;
+
+        @Inject(method = "canSpawn", at = @At(value = "HEAD"), cancellable = true)
+        private void canSpawn(MobCategory category, CallbackInfoReturnable<Boolean> cir) {
             if (IGNYSettings.spawnMaxCountIgnoresChunkOverlap && LocalMobCapCalculatorMixin.server != null) {
-                return (original.call(instance) * LocalMobCapCalculatorMixin.server.getPlayerCount());
+                cir.setReturnValue(this.counts.getOrDefault(category, 0) < category.getMaxInstancesPerChunk() * LocalMobCapCalculatorMixin.server.getPlayerCount());
             }
-            return original.call(instance);
         }
     }
 }
