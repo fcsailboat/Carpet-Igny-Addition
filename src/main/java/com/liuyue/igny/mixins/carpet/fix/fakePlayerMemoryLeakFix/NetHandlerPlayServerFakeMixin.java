@@ -7,7 +7,9 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+//#if MC >= 12002
 import net.minecraft.server.network.CommonListenerCookie;
+//#endif
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,8 +25,17 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(NetHandlerPlayServerFake.class)
 //#endif
 public class NetHandlerPlayServerFakeMixin extends ServerGamePacketListenerImpl {
-    public NetHandlerPlayServerFakeMixin(MinecraftServer server, Connection connection, ServerPlayer player, CommonListenerCookie cookie) {
+    //#if MC >= 12002
+    public NetHandlerPlayServerFakeMixin(MinecraftServer server, Connection connection, ServerPlayer player, CommonListenerCookie cookie)
+    //#else
+    //$$ public NetHandlerPlayServerFakeMixin(MinecraftServer server, Connection connection, ServerPlayer player)
+    //#endif
+    {
+        //#if MC >= 12002
         super(server, connection, player, cookie);
+        //#else
+        //$$ super(server, connection, player);
+        //#endif
     }
 
     //#if MC < 26.1
