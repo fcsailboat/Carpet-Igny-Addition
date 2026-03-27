@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(Connection.class)
 //#endif
 public class ConnectionMixin {
+    //#if MC < 26.1
     //#if MC >= 12106
     //$$ @Inject(method = "send(Lnet/minecraft/network/protocol/Packet;Lio/netty/channel/ChannelFutureListener;Z)V", at = @At("HEAD"), cancellable = true)
     //#elseif MC >= 12002
@@ -41,4 +42,5 @@ public class ConnectionMixin {
         Connection self = (Connection) (Object) this;
         if (IGNYSettings.fakePlayerMemoryLeakFix && self instanceof FakeClientConnection) ci.cancel();
     }
+    //#endif
 }
