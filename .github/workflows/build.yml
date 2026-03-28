@@ -33,6 +33,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/dev' }}
+          build-scan-terms-of-use-agree: 'yes'
 
       - name: Build with gradle
         run: |
