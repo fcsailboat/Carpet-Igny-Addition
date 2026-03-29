@@ -8,9 +8,13 @@ import com.liuyue.igny.mixins.logger.LoggerAccessor;
 import com.liuyue.igny.network.packet.block.HighlightPayload;
 
 import com.liuyue.igny.network.packet.block.RemoveHighlightPayload;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -73,11 +77,28 @@ public abstract class AbstractFurnaceBlockEntityMixin extends BlockEntity {
     @Unique
     private Logger logger;
 
+    @Unique boolean isSleeping = false;
+
     @Unique private static int counter = 0;
     @Unique public int id = 0;
 
     public AbstractFurnaceBlockEntityMixin(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
+    }
+
+    @Inject(method = "loadAdditional", at = @At(value = "RETURN"))
+    private void loadAdditional(CompoundTag tag, HolderLookup.Provider registries, CallbackInfo ci) {
+        if (isSleeping && this.level != null && !this.level.isClientSide()) {
+            isSleeping = false;
+        }
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        if (isSleeping && this.level != null && !this.level.isClientSide()) {
+            isSleeping = false;
+        }
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
@@ -108,14 +129,14 @@ public abstract class AbstractFurnaceBlockEntityMixin extends BlockEntity {
         }
     }
 
-    @Inject(method = "serverTick", at = @At("HEAD"), cancellable = true)
+    @WrapMethod(method = "serverTick")
     private static void onTick(
             //#if MC >= 12102
             //$$ ServerLevel level,
             //#else
             Level level,
             //#endif
-            BlockPos blockPos, BlockState blockState, AbstractFurnaceBlockEntity blockEntity, CallbackInfo ci) {
+            BlockPos blockPos, BlockState blockState, AbstractFurnaceBlockEntity blockEntity, Operation<Void> original) {
         if (blockEntity == null) return;
         AbstractFurnaceBlockEntityMixin self = (AbstractFurnaceBlockEntityMixin) (Object) blockEntity;
         self.logger = LoggerRegistry.getLogger("allFurnace");
@@ -137,13 +158,15 @@ public abstract class AbstractFurnaceBlockEntityMixin extends BlockEntity {
             }
         }
         if (IGNYServerMod.LITHIUM) {
-            if (!hasRecipe && self.igny$shouldSleep(blockState)) ci.cancel();
+            if (!hasRecipe && self.isSleeping) return;
         }
+        original.call(level, blockPos, blockState, blockEntity);
+        self.checkSleep(blockState);
     }
 
     @Unique
-    private boolean igny$shouldSleep(BlockState state) {
-        return this.level != null &&
+    private void checkSleep(BlockState state) {
+        if (this.level != null &&
                 //#if MC >= 26.1
                 //$$ this.litTimeRemaining > 0
                 //#else
@@ -155,7 +178,9 @@ public abstract class AbstractFurnaceBlockEntityMixin extends BlockEntity {
                 //#else
                 this.cookingProgress == 0
                 //#endif
-                && (state.is(Blocks.FURNACE) || state.is(Blocks.BLAST_FURNACE) || state.is(Blocks.SMOKER));
+                && (state.is(Blocks.FURNACE) || state.is(Blocks.BLAST_FURNACE) || state.is(Blocks.SMOKER))) {
+            isSleeping = true;
+        }
     }
 
     @Unique
