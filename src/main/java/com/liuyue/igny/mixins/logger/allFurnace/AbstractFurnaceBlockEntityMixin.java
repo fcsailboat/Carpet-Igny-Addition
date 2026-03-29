@@ -47,6 +47,10 @@ import net.minecraft.world.level.Level;
 //$$ import com.liuyue.igny.IGNYServer;
 //#endif
 
+//#if MC >= 12106
+//$$ import net.minecraft.world.level.storage.ValueInput;
+//#endif
+
 @Mixin(value = AbstractFurnaceBlockEntity.class, priority = 990)
 public abstract class AbstractFurnaceBlockEntityMixin extends BlockEntity {
     @Shadow
@@ -87,7 +91,16 @@ public abstract class AbstractFurnaceBlockEntityMixin extends BlockEntity {
     }
 
     @Inject(method = "loadAdditional", at = @At(value = "RETURN"))
-    private void loadAdditional(CompoundTag tag, HolderLookup.Provider registries, CallbackInfo ci) {
+    private void loadAdditional(
+            //#if MC >= 12106
+            //$$ ValueInput input,
+            //#else
+            CompoundTag tag,
+                                //#if MC >= 12005
+                                HolderLookup.Provider registries,
+                                //#endif
+            //#endif
+                                CallbackInfo ci) {
         if (isSleeping && this.level != null && !this.level.isClientSide()) {
             isSleeping = false;
         }
