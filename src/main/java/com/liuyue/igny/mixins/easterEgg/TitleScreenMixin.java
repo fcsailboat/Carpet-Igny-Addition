@@ -19,7 +19,10 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-//#if MC > 11904
+//#if MC >= 26.1
+//$$ import net.minecraft.client.input.MouseButtonEvent;
+//$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
+//#elseif MC > 11904
 import net.minecraft.client.gui.GuiGraphics;
 //#else
 //$$ import com.mojang.blaze3d.vertex.PoseStack;
@@ -79,12 +82,22 @@ public abstract class TitleScreenMixin extends Screen {
     }
 
     @Inject(method = "mouseClicked", at = @At("RETURN"))
-    private void onButtonClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
+    //#if MC >= 26.1
+    //$$ private void onButtonClicked(MouseButtonEvent event, boolean doubleClick, CallbackInfoReturnable<Boolean> cir)
+    //#else
+    private void onButtonClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir)
+    //#endif
+    {
         if (!isAprilFoolsActive || !cir.getReturnValueZ()) return;
 
         for (Renderable renderable : ((ScreenMixin) this).getRenderalbe()) {
             if (renderable instanceof AbstractWidget widget && widget != surrenderButton) {
-                if (widget.isMouseOver(mouseX, mouseY)) {
+                //#if MC >= 26.1
+                //$$ if (widget.isMouseOver(event.x(), event.y()))
+                //#else
+                if (widget.isMouseOver(mouseX, mouseY))
+                //#endif
+                {
                     String key = getTranslationKey(widget);
                     if ("menu.singleplayer".equals(key) || "menu.multiplayer".equals(key)) {
                         this.stopThePrank();
@@ -114,8 +127,14 @@ public abstract class TitleScreenMixin extends Screen {
         }
     }
 
+    //#if MC >= 26.1
+    //$$ @Inject(method = "extractRenderState", at = @At("HEAD"))
+    //#else
     @Inject(method = "render", at = @At("HEAD"))
-    //#if MC > 11904
+    //#endif
+    //#if MC >= 26.1
+    //$$ private void applyPclPhysics(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a, CallbackInfo ci)
+    //#elseif MC > 11904
     private void applyPclPhysics(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci)
     //#else
     //$$ private void applyPclPhysics(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo ci)
