@@ -1,6 +1,5 @@
 package com.liuyue.igny.mixins.easterEgg;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
@@ -19,6 +18,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+
+//#if MC > 11904
+import net.minecraft.client.gui.GuiGraphics;
+//#else
+//$$ import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
 
 @Mixin(TitleScreen.class)
 public abstract class TitleScreenMixin extends Screen {
@@ -69,6 +74,7 @@ public abstract class TitleScreenMixin extends Screen {
                 .bounds(this.width - 80 - 4, this.height - 32, 80, 20)
                 .build();
 
+        this.surrenderButton.visible = false;
         this.addRenderableWidget(this.surrenderButton);
     }
 
@@ -109,7 +115,12 @@ public abstract class TitleScreenMixin extends Screen {
     }
 
     @Inject(method = "render", at = @At("HEAD"))
-    private void applyPclPhysics(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
+    //#if MC > 11904
+    private void applyPclPhysics(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci)
+    //#else
+    //$$ private void applyPclPhysics(PoseStack poseStack, int mouseX, int mouseY, float partialTick, CallbackInfo ci)
+    //#endif
+    {
         if (!isAprilFoolsActive) return;
 
         if (Math.abs(mouseX - lastMouseX) < 0.01 && Math.abs(mouseY - lastMouseY) < 0.01) {
@@ -187,6 +198,9 @@ public abstract class TitleScreenMixin extends Screen {
             widget.setX((int) Math.round(pos.x));
             widget.setY((int) Math.round(pos.y));
             totalFleeDistance += vel.length();
+            if (this.surrenderButton != null && !this.surrenderButton.visible && totalFleeDistance > 1.0) {
+                this.surrenderButton.visible = true;
+            }
         }
     }
 
