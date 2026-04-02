@@ -34,7 +34,7 @@ public class RuleUtil {
             return false;
         }
         String name = entity.getCustomName().getString();
-        if ("true".equalsIgnoreCase(IGNYSettings.simpleSoundSuppression)) {
+        if ("true".equalsIgnoreCase(IGNYSettings.simpleEntityIDSuppression)) {
             return "实体ID抑制器".equals(name) || "entityIDSuppression".equalsIgnoreCase(name);
         }
 
