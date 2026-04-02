@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Mixin(SplashManager.class)
@@ -26,6 +27,13 @@ public class SplashManagerMixin {
     //$$ private String getSplash(Operation<String> original)
     //#endif
     {
+        LocalDate now = LocalDate.now();
+        boolean birthday = now.getMonthValue() == 11 && now.getDayOfMonth() == 2;
+        if (birthday) {
+            this.splashes.clear();
+            this.splashes.add("Happy birthday, Liuyue_awa!!!");
+            return original.call();
+        }
         String currentLang = Minecraft.getInstance().getLanguageManager().getSelected();
         List<String> splashes = List.copyOf(this.splashes);
         if (currentLang.contains("zh")) {
@@ -41,5 +49,6 @@ public class SplashManagerMixin {
         this.splashes.clear();
         this.splashes.addAll(splashes);
         return result;
+
     }
 }

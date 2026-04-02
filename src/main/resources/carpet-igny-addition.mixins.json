@@ -60,6 +60,7 @@
     "rule.enderDragonDeathDropExp.EnderDragonMixin",
     "rule.enderDragonDeathRiseLimit.EnderDragonMixin",
     "rule.endGatewayPortalNoCooldown.TheEndGatewayBlockEntityMixin",
+    "rule.entityIDSuppressionWhitelist.ChunkMapMixin",
     "rule.fakePlayerCanPush.EntityMixin",
     "rule.fakePlayerLoginLogoutNoChatInfo.PlayerListMixin",
     "rule.fakePlayerLoginLogoutNoChatInfo.ServerGamePacketListenerImplMixin",

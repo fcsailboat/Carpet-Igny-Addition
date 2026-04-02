@@ -846,3 +846,18 @@ Armor Stand entities must remain within loaded/ticking chunks.
 - Default value: `false`
 - Suggested options: `false`, `true`
 - Categories: `IGNY`, `CREATIVE`, `FEATURE`
+
+## entityIDSuppressionWhitelist `🐛Beta`
+
+Creation of entities not in this list will not trigger Entity ID Suppression.
+
+#all: Any entity
+
+#none: No entities
+
+Separate each entity with a `,`
+
+- Type: `boolean`
+- Default value: `false`
+- Suggested options: `false`, `true`
+- Categories: `IGNY`, `CREATIVE`, `FEATURE`

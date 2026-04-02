@@ -846,3 +846,18 @@ true: 流体源和流体都不会传播。
 - 默认值: `false`
 - 参考选项: `false`, `true`
 - 分类: `IGNY`, `CREATIVE`, `FEATURE`
+
+## 实体ID抑制器白名单 (entityIDSuppressionWhitelist) `🐛Beta`
+
+不在列表内的实体创建不会触发实体ID抑制。
+
+#all: 任意实体
+
+#none: 没有实体
+
+每个实体以`,`（英文逗号）分割
+
+- 类型: `string`
+- 默认值: `#all`
+- 参考选项: `#all`, `#none`, `minecraft:item`
+- 分类: `IGNY`, `CREATIVE`, `FEATURE`

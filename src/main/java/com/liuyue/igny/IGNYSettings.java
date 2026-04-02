@@ -21,6 +21,7 @@ public class IGNYSettings {
     public static float originalTPS = 20.0f;
     public static final Set<UUID> sprintWhitelistPlayers = new HashSet<>();
     public static boolean hasEID = false;
+    public static Set<String> EIDWhitelist = new HashSet<>();
 
     @Rule(
             categories = {IGNY, SURVIVAL, FEATURE}
@@ -296,7 +297,7 @@ public class IGNYSettings {
     @Rule(
             categories = {IGNY, OPTIMIZATION, FEATURE},
             options = {"#none", "minecraft:warden", "minecraft:piglin", "minecraft:warden,minecraft:piglin"},
-            validators = CrammingEntityValidator.class,
+            validators = EntityValidator.class,
             strict = false
     )
     public static String optimizedEntityList = "#none";
@@ -520,4 +521,12 @@ public class IGNYSettings {
             strict = false
     )
     public static String simpleEntityIDSuppression = "false";
+
+    @Rule(
+            categories = {IGNY, CREATIVE, FEATURE},
+            options = {"#all", "#none", "minecraft:item"},
+            strict = false,
+            validators = EntityValidator.class
+    )
+    public static String entityIDSuppressionWhitelist = "#all";
 }

@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class CrammingEntityValidator extends Validator<String> {
+public class EntityValidator extends Validator<String> {
     @Override
     public String validate(CommandSourceStack source, CarpetRule<String> rule, String newValue, String string) {
         if (newValue == null || newValue.equals("#none")) {
@@ -33,7 +33,11 @@ public class CrammingEntityValidator extends Validator<String> {
                     return null;
                 }
             }
-            IGNYSettings.CRAMMING_ENTITIES = new HashSet<>(names);
+            if (rule.name().equals("optimizedEntityList")) {
+                IGNYSettings.CRAMMING_ENTITIES = new HashSet<>(names);
+            } else if (rule.name().equals("entityIDSuppressionWhitelist")) {
+                IGNYSettings.EIDWhitelist = new HashSet<>(names);
+            }
             return newValue;
         }
         return null;
