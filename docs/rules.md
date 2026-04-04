@@ -823,15 +823,13 @@ true: 流体源和流体都不会传播。
 
 ## 简易实体ID抑制器 (simpleEntityIDSuppression) `🐛Beta`
 
-通过将盔甲架实体命名为指定名称来制作基于创建实体时抛出“IllegalStateException”的更新抑制器。
+通过召唤一个指定名称的假玩家来制作基于创建实体时抛出“IllegalStateException”的更新抑制器。
 
 规则值为false时，规则不生效。
 
-规则值为true时，命名为“实体ID抑制器”或“entityIDSuppression”的盔甲架实体可以用来制作实体ID抑制器。
+规则值为true时，召唤名为“实体ID抑制器”或“entityIDSuppression”的假玩家可以用来制作实体ID抑制器。
 
-规则值为其它字符串时，命名为该字符串的盔甲架实体可以用来制作实体ID抑制器。
-
-盔甲架实体需要保持运算。
+规则值为其它字符串时，召唤名为为该字符串的假玩家可以用来制作实体ID抑制器。
 
 - 类型: `boolean`
 - 默认值: `false`

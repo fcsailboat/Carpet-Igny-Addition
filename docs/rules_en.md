@@ -823,15 +823,13 @@ Takes effect after reloading the world/save if set to default.
 
 ## simpleEntityIDSuppression `🐛Beta`
 
-Creates an update suppressor based on throwing an 'IllegalStateException' during entity creation by naming an Armor Stand to a specific name.
+Create an update suppressor based on an 'IllegalStateException' thrown during entity creation by spawning a fake player with a specific name.
 
 When the rule value is 'false', the rule is disabled.
 
-When the rule value is 'true', Armor Stand entities named 'Entity ID Suppressor' or 'entityIDSuppression' can be used to create Entity ID suppressors.
+When the rule value is 'true', spawning a fake player named '实体ID抑制器' or 'entityIDSuppression' can be used to create an Entity ID Suppressor.
 
-When the rule value is any other string, Armor Stand entities named with that string can be used to create Entity ID suppressors.
-
-Armor Stand entities must remain within loaded/ticking chunks.
+When the rule value is any other string, spawning a fake player with that specific string as their name can be used to create an Entity ID Suppressor.
 
 - Type: `boolean`
 - Default value: `false`

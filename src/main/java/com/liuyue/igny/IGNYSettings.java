@@ -20,7 +20,6 @@ public class IGNYSettings {
     public static final ThreadLocal<Boolean> itemStackCountChanged = ThreadLocal.withInitial(() -> true);
     public static float originalTPS = 20.0f;
     public static final Set<UUID> sprintWhitelistPlayers = new HashSet<>();
-    public static boolean hasEID = false;
     public static Set<String> EIDWhitelist = new HashSet<>();
 
     @Rule(

@@ -4,6 +4,7 @@ import carpet.CarpetServer;
 import carpet.api.settings.CarpetRule;
 import com.liuyue.igny.IGNYServerMod;
 import com.liuyue.igny.IGNYSettings;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 
@@ -26,14 +27,15 @@ public class RuleUtil {
     }
     //#endif
 
-    public static Boolean canEntityIDSuppression(Entity entity) {
+    public static Boolean canEntityIDSuppression(ServerPlayer player) {
         if ("false".equalsIgnoreCase(IGNYSettings.simpleEntityIDSuppression)) {
             return false;
         }
-        if (entity.getCustomName() == null || !(entity instanceof ArmorStand)) {
-            return false;
-        }
-        String name = entity.getCustomName().getString();
+        //#if MC >= 12110
+        //$$ String name = player.getGameProfile().name();
+        //#else
+        String name = player.getGameProfile().getName();
+        //#endif
         if ("true".equalsIgnoreCase(IGNYSettings.simpleEntityIDSuppression)) {
             return "实体ID抑制器".equals(name) || "entityIDSuppression".equalsIgnoreCase(name);
         }
