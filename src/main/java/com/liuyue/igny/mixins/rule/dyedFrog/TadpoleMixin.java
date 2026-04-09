@@ -48,7 +48,11 @@ public class TadpoleMixin {
     @WrapOperation(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/frog/Tadpole;isFood(Lnet/minecraft/world/item/ItemStack;)Z"))
     private boolean isFood(Tadpole instance, ItemStack itemStack, Operation<Boolean> original) {
         if (IGNYSettings.dyedFrog) {
+            //#if MC >= 26.2
+            //$$ return itemStack.is(Items.DYE.green()) || itemStack.is(Items.DYE.lightGray()) || itemStack.is(Items.DYE.orange()) || original.call(instance, itemStack);
+            //#else
             return itemStack.is(Items.GREEN_DYE) || itemStack.is(Items.LIGHT_GRAY_DYE) || itemStack.is(Items.ORANGE_DYE) || original.call(instance, itemStack);
+            //#endif
         }
         return original.call(instance, itemStack);
     }
@@ -56,9 +60,15 @@ public class TadpoleMixin {
     @Inject(method = "feed", at = @At(value = "HEAD"))
     private void feed(Player player, ItemStack itemStack, CallbackInfo ci) {
         switch (itemStack.getItem()) {
+            //#if MC >= 26.2
+            //$$ case Item item when item == Items.DYE.green() -> greenDyeCount++;
+            //$$ case Item item when item ==  Items.DYE.lightGray() -> grayDyeCount++;
+            //$$ case Item item when item == Items.DYE.orange() -> orangeDyeCount++;
+            //#else
             case Item item when item == Items.GREEN_DYE -> greenDyeCount++;
             case Item item when item ==  Items.LIGHT_GRAY_DYE -> grayDyeCount++;
             case Item item when item == Items.ORANGE_DYE -> orangeDyeCount++;
+            //#endif
             default -> slimeBallCount++;
         }
     }

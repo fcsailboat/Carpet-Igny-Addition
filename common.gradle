@@ -13,6 +13,9 @@ repositories {
 		url = 'https://masa.dy.fi/maven'
 	}
 	maven {
+		url = 'https://repo1.maven.org/maven2'
+	}
+	maven {
 		name = 'ParchmentMC'
 		url = 'https://maven.parchmentmc.org'
 	}
@@ -105,9 +108,9 @@ dependencies {
 		}
 	}
 	if (mcVersion >= 12110) {
-		include(autoImplementation(name: 'ryansrenderingkit', version: project.ryansrenderingkit_version))
+		include(autoImplementation("io.github.hotpad100c:ryansrenderingkit:${project.ryansrenderingkit_version}"))
 	} else {
-		include(autoImplementation(name: 'ryansrenderingkit', version: project.ryansrenderingkit_version)) {
+		include(autoImplementation("io.github.hotpad100c:ryansrenderingkit:${project.ryansrenderingkit_version}")) {
 			exclude group: "net.fabricmc.fabric-api"
 		}
 	}
