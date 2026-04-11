@@ -536,4 +536,5 @@ public class IGNYSettings {
     //$$         categories = {IGNY, FEATURE, PORTING}
     //$$ )
     //$$ public static boolean comparatorDupeReintroduced = false;
+    //#endif
 }
