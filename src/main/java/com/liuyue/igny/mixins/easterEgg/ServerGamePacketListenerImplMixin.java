@@ -18,7 +18,7 @@ public class ServerGamePacketListenerImplMixin {
     @WrapOperation(
             //#if MC >= 26.1
             //$$ method = "lambda$handleChat$1",
-            //#eles
+            //#else
             method = "method_45064",
             //#endif
             at = @At(
