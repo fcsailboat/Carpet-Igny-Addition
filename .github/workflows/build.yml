@@ -55,7 +55,14 @@ jobs:
         timeout-minutes: 10
         run: |
           mkdir -p ./run
-          ./gradlew runClientMixinAudit
+          xvfb-run -a \
+          ./gradlew runClientMixinAudit \
+            --no-daemon \
+            -Djava.awt.headless=true \
+            -Dtext2speech.provider=null \
+            -Dorg.lwjgl.openal.libname= \
+            -Dorg.lwjgl.glfw.libname= \
+            -Dfabric.client.gametest=false
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
