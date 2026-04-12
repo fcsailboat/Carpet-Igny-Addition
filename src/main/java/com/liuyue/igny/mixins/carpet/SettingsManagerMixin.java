@@ -101,7 +101,7 @@ public abstract class SettingsManagerMixin {
         T rawValue = instance.value();
         original.call(instance, commandSourceStack, s);
         RuleObserver.handleChange(commandSourceStack, instance, rawValue, s);
-        if (IGNYSettings.showRuleChangeHistory) {
+        if (IGNYSettings.showRuleChangeHistory && rawValue != instance.value()) {
             RuleChangeTracker.ruleChanged(commandSourceStack, instance, rawValue, s);
         }
     }
