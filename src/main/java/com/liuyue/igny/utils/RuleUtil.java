@@ -76,7 +76,7 @@ public class RuleUtil {
                 || block.equals(Blocks.TRIAL_SPAWNER)
                 || block.equals(Blocks.VAULT)
                 //#elseif MC >= 12003
-                //$$ || block.is(Blocks.TRIAL_SPAWNER)
+                //$$ || block.equals(Blocks.TRIAL_SPAWNER)
                 //#endif
                 ;
     }
