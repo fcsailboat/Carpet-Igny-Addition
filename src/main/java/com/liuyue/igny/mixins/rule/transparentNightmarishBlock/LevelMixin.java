@@ -99,7 +99,7 @@ public abstract class LevelMixin {
             if (level.isClientSide()) return;
 
             BlockState oldState = level.getBlockState(pos);
-            if (RuleUtil.isNightmarishBlock(oldState) && IGNYSettings.movingBlocks.get() && !RuleUtil.isNightmarishBlock(state)) {
+            if (RuleUtil.isNightmarishBlock(oldState.getBlock()) && IGNYSettings.movingBlocks.get() && !RuleUtil.isNightmarishBlock(state.getBlock())) {
                 BlockVaultManager.INSTANCE.storeBlock(level, pos, oldState);
             }
         }
@@ -125,7 +125,7 @@ public abstract class LevelMixin {
             if (IGNYSettings.transparentNightmarishBlock) {
                 BlockBehaviour.BlockStateBase state = (BlockBehaviour.BlockStateBase) (Object) this;
                 if (state instanceof BlockState blockState) {
-                    if (RuleUtil.isNightmarishBlock(blockState)) {
+                    if (RuleUtil.isNightmarishBlock(blockState.getBlock())) {
                         cir.setReturnValue(PushReaction.DESTROY);
                     }
                 }
@@ -137,7 +137,7 @@ public abstract class LevelMixin {
             if (IGNYSettings.transparentNightmarishBlock) {
                 BlockBehaviour.BlockStateBase state = (BlockBehaviour.BlockStateBase) (Object) this;
                 if (state instanceof BlockState blockState) {
-                    if (RuleUtil.isNightmarishBlock(blockState) ||state.getBlock() instanceof AmethystClusterBlock){
+                    if (RuleUtil.isNightmarishBlock(blockState.getBlock()) ||state.getBlock() instanceof AmethystClusterBlock){
                         if (context instanceof EntityCollisionContext ecc && !(ecc.getEntity() instanceof net.minecraft.world.entity.player.Player)) {
                             cir.setReturnValue(Shapes.empty());
                         }
@@ -151,7 +151,7 @@ public abstract class LevelMixin {
             if (IGNYSettings.transparentNightmarishBlock) {
                 BlockBehaviour.BlockStateBase state = (BlockBehaviour.BlockStateBase) (Object) this;
                 if (state instanceof BlockState blockState) {
-                    if (RuleUtil.isNightmarishBlock(blockState)) {
+                    if (RuleUtil.isNightmarishBlock(blockState.getBlock())) {
                         cir.setReturnValue(-1.0F);
                     }
                 }

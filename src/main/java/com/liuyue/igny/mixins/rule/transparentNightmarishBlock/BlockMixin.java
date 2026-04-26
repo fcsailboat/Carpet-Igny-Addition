@@ -1,8 +1,8 @@
 package com.liuyue.igny.mixins.rule.transparentNightmarishBlock;
 
 import com.liuyue.igny.IGNYSettings;
+import com.liuyue.igny.utils.RuleUtil;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,7 +14,7 @@ public class BlockMixin {
     private void getExplosionResistance(CallbackInfoReturnable<Float> cir) {
         if (IGNYSettings.transparentNightmarishBlock) {
             Block block = (Block) (Object) this;
-            if (block.equals(Blocks.BUDDING_AMETHYST)) {
+            if (RuleUtil.isNightmarishBlock(block)) {
                 cir.setReturnValue(1200f);
             }
         }
