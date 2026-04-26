@@ -1,12 +1,12 @@
-package com.liuyue.igny.mixins.rule.transparentBuddingAmethyst;
+package com.liuyue.igny.mixins.rule.transparentNightmarishBlock;
 
 import com.liuyue.igny.IGNYSettings;
-import com.liuyue.igny.manager.AmethystVaultManager;
+import com.liuyue.igny.manager.BlockVaultManager;
+import com.liuyue.igny.utils.RuleUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AmethystClusterBlock;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
@@ -43,14 +43,13 @@ public abstract class LevelMixin {
         if (level.isClientSide()) return;
 
         if (++igny$saveTimer >= 6000) {
-            AmethystVaultManager.INSTANCE.scheduledSave();
+            BlockVaultManager.INSTANCE.scheduledSave();
             igny$saveTimer = 0;
         }
 
         if (!igny$initialized) {
-            for (long posLong : AmethystVaultManager.INSTANCE.getPendingRestore()) {
-                BlockPos pos = BlockPos.of(posLong);
-                igny$restoreTimers.putIfAbsent(pos.immutable(), 20);
+            for (long posLong : BlockVaultManager.INSTANCE.getPendingRestore()) {
+                igny$restoreTimers.putIfAbsent(BlockPos.of(posLong).immutable(), 20);
             }
             igny$initialized = true;
         }
@@ -64,7 +63,7 @@ public abstract class LevelMixin {
             int attemptCount = entry.getValue();
 
             if (attemptCount <= 0) {
-                AmethystVaultManager.INSTANCE.markPending(pos);
+                BlockVaultManager.INSTANCE.markPending(pos);
                 igny$neighborSnapshots.remove(pos);
                 it.remove();
                 continue;
@@ -84,10 +83,7 @@ public abstract class LevelMixin {
             }
 
             if (isAir && !changed) {
-                BlockState savedState = AmethystVaultManager.INSTANCE.getAndRemove(pos);
-                if (savedState != null) {
-                    level.setBlock(pos, savedState, 3);
-                }
+                BlockVaultManager.INSTANCE.restoreBlock(level, pos);
                 igny$neighborSnapshots.remove(pos);
                 it.remove();
             } else {
@@ -98,24 +94,24 @@ public abstract class LevelMixin {
 
     @Inject(method = "setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;II)Z", at = @At(value = "HEAD"))
     private void setBlockHead(BlockPos pos, BlockState state, int flags, int recursionLeft, CallbackInfoReturnable<Boolean> cir) {
-        if (IGNYSettings.transparentBuddingAmethyst) {
+        if (IGNYSettings.transparentNightmarishBlock) {
             Level level = (Level) (Object) this;
             if (level.isClientSide()) return;
 
             BlockState oldState = level.getBlockState(pos);
-            if (oldState.is(Blocks.BUDDING_AMETHYST) && IGNYSettings.movingBlocks.get() && !state.is(Blocks.BUDDING_AMETHYST)) {
-                AmethystVaultManager.INSTANCE.storeBud(pos, oldState);
+            if (RuleUtil.isNightmarishBlock(oldState) && IGNYSettings.movingBlocks.get() && !RuleUtil.isNightmarishBlock(state)) {
+                BlockVaultManager.INSTANCE.storeBlock(level, pos, oldState);
             }
         }
     }
 
     @Inject(method = "setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;II)Z", at = @At("RETURN"))
     private void setBlockReturn(BlockPos pos, BlockState newState, int flags, int recursion, CallbackInfoReturnable<Boolean> cir) {
-        if (IGNYSettings.transparentBuddingAmethyst) {
+        if (IGNYSettings.transparentNightmarishBlock) {
             Level level = (Level) (Object) this;
             if (level.isClientSide() || !cir.getReturnValue()) return;
 
-            if (newState.isAir() && AmethystVaultManager.INSTANCE.has(pos)) {
+            if (newState.isAir() && BlockVaultManager.INSTANCE.has(pos)) {
                 igny$restoreTimers.put(pos.immutable(), 20);
                 igny$neighborSnapshots.remove(pos);
             }
@@ -126,21 +122,25 @@ public abstract class LevelMixin {
     abstract static class BlockStateBaseMixin {
         @Inject(method = "getPistonPushReaction", at = @At("HEAD"), cancellable = true)
         private void getPistonPushReaction(CallbackInfoReturnable<PushReaction> cir) {
-            if (IGNYSettings.transparentBuddingAmethyst) {
+            if (IGNYSettings.transparentNightmarishBlock) {
                 BlockBehaviour.BlockStateBase state = (BlockBehaviour.BlockStateBase) (Object) this;
-                if (state.is(Blocks.BUDDING_AMETHYST)) {
-                    cir.setReturnValue(PushReaction.DESTROY);
+                if (state instanceof BlockState blockState) {
+                    if (RuleUtil.isNightmarishBlock(blockState)) {
+                        cir.setReturnValue(PushReaction.DESTROY);
+                    }
                 }
             }
         }
 
         @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("HEAD"), cancellable = true)
         private void getCollisionShape(net.minecraft.world.level.BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-            if (IGNYSettings.transparentBuddingAmethyst) {
+            if (IGNYSettings.transparentNightmarishBlock) {
                 BlockBehaviour.BlockStateBase state = (BlockBehaviour.BlockStateBase) (Object) this;
-                if (state.is(Blocks.BUDDING_AMETHYST) || state.getBlock() instanceof AmethystClusterBlock) {
-                    if (context instanceof EntityCollisionContext ecc && !(ecc.getEntity() instanceof net.minecraft.world.entity.player.Player)) {
-                        cir.setReturnValue(Shapes.empty());
+                if (state instanceof BlockState blockState) {
+                    if (RuleUtil.isNightmarishBlock(blockState) ||state.getBlock() instanceof AmethystClusterBlock){
+                        if (context instanceof EntityCollisionContext ecc && !(ecc.getEntity() instanceof net.minecraft.world.entity.player.Player)) {
+                            cir.setReturnValue(Shapes.empty());
+                        }
                     }
                 }
             }
@@ -148,10 +148,12 @@ public abstract class LevelMixin {
 
         @Inject(method = "getDestroySpeed", at = @At("HEAD"), cancellable = true)
         private void getDestroySpeed(net.minecraft.world.level.BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-            if (IGNYSettings.transparentBuddingAmethyst) {
+            if (IGNYSettings.transparentNightmarishBlock) {
                 BlockBehaviour.BlockStateBase state = (BlockBehaviour.BlockStateBase) (Object) this;
-                if (state.is(Blocks.BUDDING_AMETHYST)) {
-                    cir.setReturnValue(-1.0F);
+                if (state instanceof BlockState blockState) {
+                    if (RuleUtil.isNightmarishBlock(blockState)) {
+                        cir.setReturnValue(-1.0F);
+                    }
                 }
             }
         }

@@ -553,5 +553,5 @@ public class IGNYSettings {
     @Rule(
             categories = {IGNY, SURVIVAL, FEATURE}
     )
-    public static boolean transparentBuddingAmethyst = false;
+    public static boolean transparentNightmarishBlock = false;
 }

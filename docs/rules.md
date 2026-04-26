@@ -878,9 +878,9 @@ true: 流体源和流体都不会传播。
 - 参考选项: `false`, `true`
 - 分类: `IGNY`, `SURVIVAL`, `FEATURE`
 
-## 透明紫水晶母岩 (transparentBuddingAmethyst) `🐛Beta`
+## 透明梦魇方块 (transparentNightmarishBlock) `🐛Beta`
 
-让紫水晶母岩像小透明一样，能被非玩家实体穿过，且活塞等方式移动方块时能穿过紫水晶母岩，无法被炸毁和挖掘，无头活塞收回也无法将其破坏。
+让试炼刷怪笼、宝库和紫水晶母岩像幽灵方块一样，能被非玩家实体穿过，且活塞等方式移动方块时能穿过紫水晶母岩，无法被炸毁和挖掘，无头活塞收回也无法将其破坏。
 
 - 类型: `boolean`
 - 默认值: `false`

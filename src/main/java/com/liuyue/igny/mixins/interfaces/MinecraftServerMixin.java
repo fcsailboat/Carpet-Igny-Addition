@@ -2,7 +2,7 @@
 package com.liuyue.igny.mixins.interfaces;
 
 import com.liuyue.igny.IGNYServer;
-import com.liuyue.igny.manager.AmethystVaultManager;
+import com.liuyue.igny.manager.BlockVaultManager;
 import com.liuyue.igny.manager.CustomPickupDataManager;
 import com.liuyue.igny.manager.CustomItemMaxStackSizeDataManager;
 import com.liuyue.igny.task.ITask;
@@ -26,7 +26,7 @@ public abstract class MinecraftServerMixin {
             //#if MC >= 12006
             CustomItemMaxStackSizeDataManager.INSTANCE.setServer(server);
             //#endif
-            AmethystVaultManager.INSTANCE.setServer(server);
+            BlockVaultManager.INSTANCE.setServer(server);
         }
     }
 

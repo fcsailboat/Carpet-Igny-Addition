@@ -7,6 +7,8 @@ import com.liuyue.igny.IGNYSettings;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.WanderingTrader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
 
@@ -66,5 +68,16 @@ public class RuleUtil {
                 serverPlayer.stopRiding();
             }
         }
+    }
+
+    public static boolean isNightmarishBlock(BlockState blockState) {
+        return blockState.is(Blocks.BUDDING_AMETHYST)
+                //#if MC >= 12005
+                || blockState.is(Blocks.TRIAL_SPAWNER)
+                || blockState.is(Blocks.VAULT)
+                //#elseif MC >= 12003
+                //$$ || blockState.is(Blocks.TRIAL_SPAWNER)
+                //#endif
+                ;
     }
 }
