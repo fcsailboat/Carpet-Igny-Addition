@@ -33,8 +33,6 @@ public abstract class LevelMixin {
     @Unique
     private final Map<BlockPos, BlockState[]> igny$neighborSnapshots = new HashMap<>();
     @Unique
-    private int igny$saveTimer = 0;
-    @Unique
     private boolean igny$initialized = false;
 
     @Inject(method = "tickBlockEntities", at = @At("TAIL"))
@@ -42,14 +40,13 @@ public abstract class LevelMixin {
         Level level = (Level) (Object) this;
         if (level.isClientSide()) return;
 
-        if (++igny$saveTimer >= 6000) {
-            BlockVaultManager.INSTANCE.scheduledSave();
-            igny$saveTimer = 0;
-        }
-
         if (!igny$initialized) {
-            for (long posLong : BlockVaultManager.INSTANCE.getPendingRestore()) {
-                igny$restoreTimers.putIfAbsent(BlockPos.of(posLong).immutable(), 20);
+            String currentDim = level.dimension().location().toString();
+            for (String key : BlockVaultManager.INSTANCE.getPendingRestore()) {
+                if (key.startsWith(currentDim + ":")) {
+                    long posLong = Long.parseLong(key.substring(currentDim.length() + 1));
+                    igny$restoreTimers.putIfAbsent(BlockPos.of(posLong).immutable(), 20);
+                }
             }
             igny$initialized = true;
         }
@@ -63,7 +60,7 @@ public abstract class LevelMixin {
             int attemptCount = entry.getValue();
 
             if (attemptCount <= 0) {
-                BlockVaultManager.INSTANCE.markPending(pos);
+                BlockVaultManager.INSTANCE.markPending(level, pos);
                 igny$neighborSnapshots.remove(pos);
                 it.remove();
                 continue;
@@ -111,7 +108,7 @@ public abstract class LevelMixin {
             Level level = (Level) (Object) this;
             if (level.isClientSide() || !cir.getReturnValue()) return;
 
-            if (newState.isAir() && BlockVaultManager.INSTANCE.has(pos)) {
+            if (newState.isAir() && BlockVaultManager.INSTANCE.has(level, pos)) {
                 igny$restoreTimers.put(pos.immutable(), 20);
                 igny$neighborSnapshots.remove(pos);
             }
@@ -137,7 +134,7 @@ public abstract class LevelMixin {
             if (IGNYSettings.transparentNightmarishBlock) {
                 BlockBehaviour.BlockStateBase state = (BlockBehaviour.BlockStateBase) (Object) this;
                 if (state instanceof BlockState blockState) {
-                    if (RuleUtil.isNightmarishBlock(blockState.getBlock()) ||state.getBlock() instanceof AmethystClusterBlock){
+                    if (RuleUtil.isNightmarishBlock(blockState.getBlock()) || state.getBlock() instanceof AmethystClusterBlock){
                         if (context instanceof EntityCollisionContext ecc && !(ecc.getEntity() instanceof net.minecraft.world.entity.player.Player)) {
                             cir.setReturnValue(Shapes.empty());
                         }

@@ -4,6 +4,7 @@ import carpet.CarpetExtension;
 import carpet.CarpetServer;
 import com.liuyue.igny.commands.*;
 import com.liuyue.igny.logger.IGNYLoggers;
+import com.liuyue.igny.manager.BlockVaultManager;
 import com.liuyue.igny.network.packet.PacketUtil;
 import com.liuyue.igny.rule.RuleObserver;
 import com.liuyue.igny.utils.ComponentTranslate;
@@ -14,6 +15,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 //#if MC < 12005
@@ -104,5 +106,9 @@ public class IGNYServer implements CarpetExtension {
     @Override
     public void onPlayerLoggedOut(ServerPlayer player) {
        TickUtil.checkTickRate(minecraftServer);
+    }
+
+    public static void onLevelSave() {
+        BlockVaultManager.INSTANCE.save();
     }
 }

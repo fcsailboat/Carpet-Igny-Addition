@@ -28,20 +28,18 @@ public class BlockVaultManager extends BaseDataManager<BlockVaultManager.VaultDa
     public static final BlockVaultManager INSTANCE = new BlockVaultManager();
 
     private VaultData data;
-    private boolean dirty = false;
 
     public static class VaultData {
-        public Map<Long, String[]> vault = new HashMap<>();
-        public Set<Long> pendingRestore = new HashSet<>();
+        public Map<String, String[]> vault = new HashMap<>();
+        public Set<String> pendingRestore = new HashSet<>();
     }
 
-    @Override protected String getFileName() { return "amethyst_vault.json"; }
+    @Override protected String getFileName() { return "nightmarish_vault.json"; }
     @Override protected Type getDataType() { return new TypeToken<VaultData>(){}.getType(); }
     @Override public VaultData getDefaultData() { return new VaultData(); }
 
     @Override protected void applyData(VaultData data) {
         this.data = data != null ? data : new VaultData();
-        this.dirty = false;
     }
 
     @Override public VaultData getCurrentData() {
@@ -49,7 +47,12 @@ public class BlockVaultManager extends BaseDataManager<BlockVaultManager.VaultDa
         return this.data;
     }
 
+    private String getDictKey(Level level, BlockPos pos) {
+        return level.dimension().location() + ":" + pos.asLong();
+    }
+
     public void storeBlock(Level level, BlockPos pos, BlockState state) {
+        String key = getDictKey(level, pos);
         String blockId = BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
         String snbt = "";
 
@@ -63,21 +66,19 @@ public class BlockVaultManager extends BaseDataManager<BlockVaultManager.VaultDa
             //#endif
         }
 
-        getCurrentData().vault.put(pos.asLong(), new String[]{blockId, snbt});
-        this.dirty = true;
+        getCurrentData().vault.put(key, new String[]{blockId, snbt});
     }
 
-    public boolean has(BlockPos pos) {
-        return getCurrentData().vault.containsKey(pos.asLong());
+    public boolean has(Level level, BlockPos pos) {
+        return getCurrentData().vault.containsKey(getDictKey(level, pos));
     }
 
     public void restoreBlock(Level level, BlockPos pos) {
-        String[] info = getCurrentData().vault.remove(pos.asLong());
-        getCurrentData().pendingRestore.remove(pos.asLong());
+        String[] info = getCurrentData().vault.remove(getDictKey(level, pos));
+        getCurrentData().pendingRestore.remove(getDictKey(level, pos));
 
         if (info == null || info.length < 1) return;
 
-        this.dirty = true;
         ResourceLocation rl = ResourceLocation.tryParse(info[0]);
         if (rl == null) return;
 
@@ -117,13 +118,12 @@ public class BlockVaultManager extends BaseDataManager<BlockVaultManager.VaultDa
         }
     }
 
-    public void markPending(BlockPos pos) {
-        if (has(pos)) {
-            if (getCurrentData().pendingRestore.add(pos.asLong())) this.dirty = true;
+    public void markPending(Level level, BlockPos pos) {
+        if (has(level, pos)) {
+            getCurrentData().pendingRestore.add(getDictKey(level, pos));
         }
     }
-    public void scheduledSave() { if (this.dirty) { this.save(); this.dirty = false; } }
-    public Set<Long> getPendingRestore() { return getCurrentData().pendingRestore; }
+    public Set<String> getPendingRestore() { return getCurrentData().pendingRestore; }
     @Override protected StorageScope getScope() { return StorageScope.WORLD; }
     @Override protected SideRestraint getSideRestraint() { return SideRestraint.COMMON; }
 }
