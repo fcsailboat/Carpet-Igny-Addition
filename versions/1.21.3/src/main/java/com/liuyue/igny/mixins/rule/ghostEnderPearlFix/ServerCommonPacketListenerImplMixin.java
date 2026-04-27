@@ -23,7 +23,7 @@ public class ServerCommonPacketListenerImplMixin {
     private void disconnect(MinecraftServer instance, Runnable runnable, Operation<Void> original) {
         if (IGNYSettings.ghostEnderPearlFix) {
             if (!instance.isStopped() || ((ConnectionAccessor) this.connection).getChannel() == null) {
-                instance.executeBlocking(runnable);
+                original.call(instance, runnable);
                 return;
             }
             CompletableFuture<Void> lock = new CompletableFuture<>();
