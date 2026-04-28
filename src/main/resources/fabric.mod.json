@@ -41,5 +41,5 @@
         "fabric-api": "*",
         "carpet": "*"
     },
-    "license": "MIT"
+    "license": "LGPLv3"
 }

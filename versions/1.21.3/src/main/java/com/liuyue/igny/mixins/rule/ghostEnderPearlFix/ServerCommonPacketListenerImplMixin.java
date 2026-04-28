@@ -28,7 +28,7 @@ public class ServerCommonPacketListenerImplMixin {
             }
             CompletableFuture<Void> lock = new CompletableFuture<>();
             ((ConnectionAccessor) this.connection).getChannel().close().addListener(future -> instance.execute(() -> {
-                this.connection.handleDisconnection();
+                runnable.run();
                 lock.complete(null);
             }));
             instance.managedBlock(lock::isDone);
