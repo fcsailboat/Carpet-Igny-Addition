@@ -13,22 +13,41 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.JukeboxBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
 @Mixin(Screen.class)
 public abstract class AbstractContainerScreenMixin {
+    @Unique
+    private BlockPos igny$containerPos;
+
+    @Inject(method = "init()V", at = @At(value = "TAIL"))
+    private void igny$captureContainerPos(CallbackInfo ci) {
+        Screen self = (Screen) (Object) this;
+        if (!(self instanceof AbstractContainerScreen<?>)) {
+            return;
+        }
+        BlockPos pos = JukeboxPlaylistHelper.takeContainerPos();
+
+        if (pos != null) {
+            this.igny$containerPos = pos;
+        }
+    }
+
     @Inject(method = "getTooltipFromItem", at = @At(value = "RETURN"))
     private void igny$appendPlayingNext(ItemStack stack, CallbackInfoReturnable<List<Component>> cir) {
-        if (!((Object) this instanceof AbstractContainerScreen<?>)) {
+        Screen self = (Screen) (Object) this;
+        if (!(self instanceof AbstractContainerScreen<?>)) {
             return;
         }
         Slot hoveredSlot = ((AbstractContainerScreenAccessor) this).igny$getHoveredSlot();
         Minecraft minecraft = Minecraft.getInstance();
-        BlockPos pos = JukeboxPlaylistHelper.lastInteracted;
+        BlockPos pos = this.igny$containerPos;
         if (minecraft.level == null || minecraft.player == null || hoveredSlot == null || pos == null) {
             return;
         }
@@ -40,12 +59,15 @@ public abstract class AbstractContainerScreenMixin {
         if (menu.slots.isEmpty()) {
             return;
         }
-        Container container = menu.slots.get(0).container;
+        Container container = menu.slots.getFirst().container;
         if (container.getContainerSize() < target.getContainerSize()) {
             return;
         }
-        int position = ((JukeboxPlaylistAccess) jukebox).igny$getPlaylistPosition();
-        int next = JukeboxPlaylistHelper.findNext(container, position);
+        JukeboxPlaylistAccess access = (JukeboxPlaylistAccess) jukebox;
+        int next = access.igny$getPlaylistNext();
+        if (next < 0) {
+            next = JukeboxPlaylistHelper.findNext(container, access.igny$getPlaylistPosition());
+        }
         if (next >= 0 && hoveredSlot.index == next) {
             cir.getReturnValue().add(JukeboxPlaylistHelper.PLAYING_NEXT);
         }

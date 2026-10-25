@@ -14,7 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MultiPlayerGameMode.class)
 public abstract class MultiPlayerGameModeMixin {
     @Inject(method = "useItemOn", at = @At(value = "RETURN"))
-    private void igny$rememberInteractedPos(LocalPlayer player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
-        JukeboxPlaylistHelper.lastInteracted = hitResult.getBlockPos();
+    private void igny$offerContainerPos(LocalPlayer player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
+        InteractionResult result = cir.getReturnValue();
+
+        if (result != null && result.consumesAction()) {
+            JukeboxPlaylistHelper.offerContainerPos(hitResult.getBlockPos());
+        }
     }
 }

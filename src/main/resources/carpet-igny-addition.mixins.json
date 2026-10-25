@@ -230,6 +230,7 @@
     "rule.itemFlowTracker.compat.tis.LargeBarrelHelperInvoker",
     "rule.jukeboxPlaylist.JukeboxBlockEntityMixin",
     "rule.jukeboxPlaylist.JukeboxBlockMixin",
+    "rule.jukeboxPlaylist.LevelMixin",
     "rule.kelpNeverNaturalGrows.KelpBlockMixin",
     "rule.killFakePlayerRemoveVehicle.EntityPlayerMPFakeMixin",
     "rule.killFakePlayerRemoveVehicle.ServerPlayerMixin",
